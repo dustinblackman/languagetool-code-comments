@@ -4,8 +4,6 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.63.0"
 
-# TODO install dprint, get formatting working for toml.
-
 [dependencies]
 anyhow = "1.0.52"
 async-std = { version = "1.12.0", features = ["tokio1"] }
@@ -14,45 +12,56 @@ clap_complete = "3.2.3"
 colored = "2.0.0"
 dirs = "4.0.0"
 fstrings = "0.2.3"
-futures = {version = "0.3.23", features = ["std"]}
-languagetool-rust = "1.2.0"
+futures = { version = "0.3.23", features = ["std"] }
+languagetool-rust = { version = "1.2.0", default-features = false, features = ["cli"] }
 lazy_static = "1.4.0"
 serde = { version = "1.0.143", features = ["derive"] }
 serde_json = "1.0.83"
-# TODO reduce these features.
-tokio = { version = "1.15.0", features = ["io-std", "io-util", "macros", "net", "process", "rt", "signal", "time"] }
+tokio = { version = "1.20.1", features = ["macros"] }
 tree-sitter = "0.20.8"
-xxhash-rust = {version = "0.8.5", features = ["xxh3"]}
+xxhash-rust = { version = "0.8.5", features = ["xxh3"] }
+url = "2.2.2"
+
+# Enable vendored feature to simplify cross compilation.
+reqwest = { version = "0.11.11", default-features = false, features = ["rustls-tls", "json"] }
 
 [dev-dependencies]
-cargo-nextest = "0.9.35"
+axum = "0.5.15"
 cargo-llvm-cov = "0.4.14"
+cargo-nextest = "0.9.35"
 cross = "0.2.4"
+# dprint = "0.30.3"
+expectest = "0.12.0"
 
 [build-dependencies]
-cc = {version = "1.0.73", features = ["parallel"] }
+cc = { version = "1.0.73", features = ["parallel"] }
 vergen = { version = "7.4.0", features = ["git"] }
 
 [package.metadata.commands]
+build-windows-x64 = '''set -e
+  cd external/cross/docker
+  docker build -f cross-toolchains/docker/Dockerfile.x86_64-pc-windows-msvc-cross -t cross-msvc:local .
+  cd ../../../
+  cargo bin cross build --release --target x86_64-pc-windows-msvc
+'''
 lint = '''set -e
   cargo fmt --check
   cargo clippy
   cargo check
-  # cargo bin dprint check
+  dprint check
 '''
 lint-fix = '''set -e
-  cargo clippy --fix --allow-dirty
-  cargo fix --allow-dirty
+  cargo clippy --fix --allow-dirty --allow-staged
+  cargo fix --allow-dirty --allow-staged
   # Run twice as for some reason not all formatting is applied on the first try.
   cargo fmt
   cargo fmt
-  # cargo bin dprint fmt
+  dprint fmt
 '''
-# TODO update version.
 goreleaser = '''set -e
   mkdir -p .bin
   rm -f .bin/goreleaser
-  curl -L https://github.com/goreleaser/goreleaser/releases/download/v1.3.1/goreleaser_Darwin_x86_64.tar.gz | tar xz - -C .bin goreleaser
+  curl -L https://github.com/goreleaser/goreleaser/releases/download/v1.10.3/goreleaser_Darwin_x86_64.tar.gz | tar xz - -C .bin goreleaser
   .bin/goreleaser --rm-dist
 '''
 release = '''set -e
@@ -63,17 +72,18 @@ release = '''set -e
   git commit -m "v$LTCC_VERSION"
   git tag -a "v$LTCC_VERSION" -m "v$LTCC_VERSION"
 
-  # cargo cmd build-darwin-x64
-  # cargo cmd build-linux-x64
+  cargo bin cross build --release --target x86_64-apple-darwin
+  cargo bin cross build --release --target x86_64-unknown-linux-gnu
+  cargo bin cross build --release --target aarch64-unknown-linux-gnu
+  cargo cmd build-windows-x64
 
   git push
   git push --tags
   cargo cmd goreleaser
 '''
 
-# TODO possibly change nightly version to something that works with 1.63.0
 setup-nightly = '''
-  export LTCC_NIGHTLY=nightly-2022-01-26
+  export LTCC_NIGHTLY=nightly-2022-08-11
   rustup toolchain install "$LTCC_NIGHTLY" --component llvm-tools-preview --force
   rustup toolchain link ltcc-nightly "$(rustup toolchain list -v | grep $LTCC_NIGHTLY | grep '^nightly-' | awk '{print $2}')"
 '''
@@ -97,4 +107,3 @@ test-coverage-ci = '''
   cargo cmd setup-nightly
   cargo +ltcc-nightly bin cargo-llvm-cov --html --output-dir ./coverage --ignore-filename-regex='_test.rs'
 '''
-

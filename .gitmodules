@@ -4,3 +4,21 @@
 [submodule "external/tree-sitter-rust"]
 	path = external/tree-sitter-rust
 	url = https://github.com/tree-sitter/tree-sitter-rust.git
+[submodule "external/tree-sitter-python"]
+	path = external/tree-sitter-python
+	url = https://github.com/tree-sitter/tree-sitter-python.git
+[submodule "external/tree-sitter-javascript"]
+	path = external/tree-sitter-javascript
+	url = https://github.com/tree-sitter/tree-sitter-javascript.git
+[submodule "external/tree-sitter-bash"]
+	path = external/tree-sitter-bash
+	url = https://github.com/tree-sitter/tree-sitter-bash.git
+[submodule "external/tree-sitter-go"]
+	path = external/tree-sitter-go
+	url = https://github.com/tree-sitter/tree-sitter-go.git
+[submodule "external/tree-sitter-markdown"]
+	path = external/tree-sitter-markdown
+	url = https://github.com/ikatyang/tree-sitter-markdown.git
+[submodule "external/cross"]
+	path = external/cross
+	url = https://github.com/cross-rs/cross.git

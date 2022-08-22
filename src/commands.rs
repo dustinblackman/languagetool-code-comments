@@ -1,41 +1,19 @@
-use crate::{lt, parse};
+#[cfg(test)]
+#[path = "commands_test.rs"]
+mod tests;
+
+use crate::{cache, lt, parse};
 use anyhow::Result;
-use async_std::fs;
-use fstrings::*;
 use languagetool_rust::check::Match;
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::path::PathBuf;
-use xxhash_rust::xxh3::xxh3_64;
 
-#[derive(Default, Debug, Clone, Deserialize, Serialize)]
-struct CacheFile {
-    path: String,
-    matches: HashMap<u64, Vec<Match>>,
-}
-
-fn get_cache_path() -> PathBuf {
-    return dirs::config_dir()
-        .unwrap()
-        .join("language-tool-code-comments/cache");
-}
-
-pub async fn check(filepath: String, concurrency: usize, language: String) -> Result<()> {
-    let cache_path = get_cache_path();
-    if !cache_path.is_dir() {
-        fs::create_dir_all(cache_path).await?;
-    }
-    let filepath_hash = xxh3_64(filepath.as_bytes()).to_string();
-    let filepath_cache = get_cache_path().join(f!("{filepath_hash}.json"));
-
-    // TODO move this cache stuff to somewhere else.
-    let mut cached_match_map: HashMap<u64, Vec<Match>> = HashMap::new();
-    if filepath_cache.is_file() {
-        let cache = fs::read_to_string(filepath_cache.clone()).await?;
-        let parsed: CacheFile = serde_json::from_str(&cache)?;
-        cached_match_map = parsed.matches;
-    }
-
+pub async fn check(
+    filepath: String,
+    languagetool_api_url: String,
+    concurrency: usize,
+    language: String,
+) -> Result<Vec<Match>> {
+    let cached_match_map = cache::get_cached_matches(&filepath).await?;
     let code_comments = parse::parse_code_comments(&filepath).await?;
 
     // This is new one that'll be populated.
@@ -70,17 +48,14 @@ pub async fn check(filepath: String, concurrency: usize, language: String) -> Re
         })
         .collect();
 
-    let query_results = lt::query_many(query_requests, concurrency).await?;
+    let lt_client = lt::Client::new(&languagetool_api_url)?;
+    let query_results = lt_client.query_many(query_requests, concurrency).await?;
     for query_result in query_results.iter() {
         // TODO remove clone.
         result_match_map.insert(query_result.text_checksum, query_result.matches.to_owned());
     }
 
-    let cache_file = CacheFile {
-        path: filepath,
-        matches: result_match_map.clone(),
-    };
-    fs::write(filepath_cache, serde_json::to_string(&cache_file)?).await?;
+    cache::save_cached_matches(&filepath, &result_match_map).await?;
 
     let concat_matches: Vec<Match> = code_comments
         .iter()
@@ -101,7 +76,5 @@ pub async fn check(filepath: String, concurrency: usize, language: String) -> Re
         })
         .collect::<Vec<_>>();
 
-    println!("{}", serde_json::to_string(&concat_matches)?);
-
-    return Ok(());
+    return Ok(concat_matches);
 }

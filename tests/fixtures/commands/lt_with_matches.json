@@ -1,0 +1,68 @@
+{
+    "software": {
+        "name": "LanguageTool",
+        "version": "5.8",
+        "buildDate": "2022-07-02 14:50:13 +0000",
+        "apiVersion": 1,
+        "premium": false,
+        "premiumHint": "You might be missing errors only the Premium version can find. Contact us at support<at>languagetoolplus.com.",
+        "status": ""
+    },
+    "warnings": {
+        "incompleteResults": false
+    },
+    "language": {
+        "name": "English",
+        "code": "en",
+        "detectedLanguage": {
+            "name": "Catalan",
+            "code": "ca-ES",
+            "confidence": 0.462,
+            "source": "fasttext+commonwords"
+        }
+    },
+    "matches": [
+        {
+            "message": "Did you mean “can't” or “cannot”?",
+            "shortMessage": "Possible typo",
+            "replacements": [
+                {
+                    "value": "can't"
+                },
+                {
+                    "value": "cannot"
+                }
+            ],
+            "offset": 4,
+            "length": 4,
+            "context": {
+                "text": "# I cant spell",
+                "offset": 4,
+                "length": 4
+            },
+            "sentence": "# I cant spell",
+            "type": {
+                "typeName": "Other"
+            },
+            "rule": {
+                "id": "CANT",
+                "subId": "1",
+                "sourceFile": "grammar.xml",
+                "description": "cant (can't)",
+                "issueType": "misspelling",
+                "category": {
+                    "id": "TYPOS",
+                    "name": "Possible Typo"
+                }
+            },
+            "ignoreForIncompleteSentence": false,
+            "contextForSureMatch": 3
+        }
+    ],
+    "sentenceRanges": [
+        [
+            0,
+            14
+        ]
+    ]
+}

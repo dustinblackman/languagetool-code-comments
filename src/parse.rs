@@ -1,3 +1,7 @@
+#[cfg(test)]
+#[path = "parse_test.rs"]
+mod tests;
+
 use anyhow::{anyhow, Result};
 use async_std::fs;
 use fstrings::*;
@@ -23,15 +27,19 @@ struct CommentLeaf<'a> {
 }
 
 extern "C" {
+    fn tree_sitter_bash() -> Language;
+    fn tree_sitter_go() -> Language;
+    fn tree_sitter_javascript() -> Language;
     fn tree_sitter_typescript() -> Language;
     fn tree_sitter_tsx() -> Language;
+    fn tree_sitter_python() -> Language;
     fn tree_sitter_rust() -> Language;
 }
 
 /// Parses the provided node searching for CommentLeafs, or further nodes to scan.
 fn parse_tree<'a>(vector: &RefCell<Vec<CommentLeaf<'a>>>, node: Node<'a>, text: &'a str) {
     if node.child_count() == 0 {
-        if !node.byte_range().is_empty() && node.kind() == "comment" {
+        if !node.byte_range().is_empty() && vec!["comment", "line_comment"].contains(&node.kind()) {
             let node_text: &'a str = &text[node.byte_range()];
             vector.borrow_mut().push(CommentLeaf {
                 reference: node,
@@ -65,11 +73,26 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         .unwrap_or_default();
 
     match ext {
+        "sh" => {
+            parser.set_language(unsafe { tree_sitter_bash() })?;
+        }
+        "go" => {
+            parser.set_language(unsafe { tree_sitter_go() })?;
+        }
+        "js" => {
+            parser.set_language(unsafe { tree_sitter_javascript() })?;
+        }
+        "jsx" => {
+            parser.set_language(unsafe { tree_sitter_javascript() })?;
+        }
         "ts" => {
             parser.set_language(unsafe { tree_sitter_typescript() })?;
         }
         "tsx" => {
             parser.set_language(unsafe { tree_sitter_tsx() })?;
+        }
+        "py" => {
+            parser.set_language(unsafe { tree_sitter_python() })?;
         }
         "rs" => {
             parser.set_language(unsafe { tree_sitter_rust() })?;
@@ -92,7 +115,11 @@ pub async fn parse_code_comments(filepath: &str) -> Result<Vec<CodeComment>> {
     let code_comments = get_comment_nodes(&tree, &source_code)?
         .iter()
         .filter(|comment_node| {
-            return comment_node.reference.kind() == "comment";
+            if filepath.ends_with(".sh") && comment_node.text.starts_with("#!") {
+                return false;
+            }
+
+            return true;
         })
         .map(|comment_node| {
             let start_position = comment_node.reference.start_position();

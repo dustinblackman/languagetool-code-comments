@@ -1,6 +1,7 @@
 #![deny(clippy::implicit_return)]
 #![allow(clippy::needless_return)]
 
+mod cache;
 mod commands;
 mod lt;
 mod parse;
@@ -26,12 +27,23 @@ lazy_static! {
 
 fn build_cli() -> clap::Command<'static> {
     return clap::Command::new("languagetool-code-comments")
-        .about("Submits code comments to the LanguageTool API to provide corrections without trying to spell check your code.")
+        .about("Submits code comments to the LanguageTool API to provide grammar and spelling corrections directly in your terminal or editor.")
         .after_help(SUPPORTED_LANGS_HELP.as_str())
         .version(env!("VERGEN_GIT_SEMVER"))
         .setting(clap::AppSettings::SubcommandRequiredElseHelp)
         .subcommand(
             clap::Command::new("check")
+                .about("Parses source code comments from the provided file and passes them to LanguageTool, returning grammar and spelling mistakes if any.")
+                .arg(
+                    clap::Arg::new("url")
+                        .long("url")
+                        .short('u')
+                        .help("LanguageTool API url.")
+                        .env("LTCC_URL")
+                        .default_value("https://api.languagetool.org")
+                        .takes_value(true)
+                        .multiple_values(false),
+                )
                 .arg(
                     clap::Arg::new("file")
                         .long("file")
@@ -72,10 +84,21 @@ fn build_cli() -> clap::Command<'static> {
                         .possible_values(clap_complete::Shell::possible_values())
                         .required(true),
                 ),
+        )
+        .subcommand(
+            clap::Command::new("cache")
+                .about("Functionality around the LanguageTools result cache.")
+                .setting(clap::AppSettings::SubcommandRequiredElseHelp)
+                .subcommand(
+                    clap::Command::new("path").about("Outputs the cache directories path")
+                )
+                .subcommand(
+                    clap::Command::new("delete").about("Deletes the entire cache directory")
+                )
         );
 }
 
-fn print_completions<G: clap_complete::Generator>(gen: G, app: &mut clap::App) {
+fn print_completions<G: clap_complete::Generator>(gen: G, app: &mut clap::Command) {
     clap_complete::generate(gen, app, app.get_name().to_string(), &mut io::stdout());
 }
 
@@ -84,6 +107,7 @@ async fn parse_cli() -> Result<()> {
     match matches.subcommand() {
         Some(("check", run_matches)) => {
             let filepath = run_matches.get_one::<String>("file").unwrap().to_string();
+            let languagetool_api_url = run_matches.get_one::<String>("url").unwrap().to_string();
             let language = run_matches
                 .get_one::<String>("language")
                 .unwrap()
@@ -93,7 +117,9 @@ async fn parse_cli() -> Result<()> {
                 .unwrap()
                 .parse::<usize>()?;
 
-            commands::check(filepath, concurrency, language).await?;
+            let res =
+                commands::check(filepath, languagetool_api_url, concurrency, language).await?;
+            println!("{}", serde_json::to_string(&res)?);
         }
         Some(("completion", run_matches)) => {
             if let Ok(generator) = run_matches.value_of_t::<clap_complete::Shell>("shell") {
@@ -102,6 +128,15 @@ async fn parse_cli() -> Result<()> {
                 print_completions(generator, &mut app);
             }
         }
+        Some(("cache", args)) => match args.subcommand() {
+            Some(("delete", _)) => {
+                cache::delete_cache().await?;
+            }
+            Some(("path", _)) => {
+                println!("{}", cache::get_dir_path().await?.to_str().unwrap());
+            }
+            _ => unreachable!(),
+        },
         _ => unreachable!(),
     }
 
