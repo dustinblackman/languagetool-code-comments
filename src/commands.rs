@@ -36,8 +36,7 @@ pub async fn check(filepath: String, concurrency: usize, language: String) -> Re
         cached_match_map = parsed.matches;
     }
 
-    let source_code = fs::read_to_string(filepath.clone()).await?;
-    let code_comments = parse::parse_code_comments(source_code)?;
+    let code_comments = parse::parse_code_comments(&filepath).await?;
 
     // This is new one that'll be populated.
     // TODO better comment.

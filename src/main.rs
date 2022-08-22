@@ -6,20 +6,38 @@ mod lt;
 mod parse;
 
 use anyhow::Result;
+use colored::*;
+use fstrings::*;
+use lazy_static::lazy_static;
 use std::io;
 
-fn build_cli() -> clap::App<'static> {
-    return clap::App::new("languagetool-code-comments")
+lazy_static! {
+    static ref SUPPORTED_LANGS_HELP: String = {
+        let supported_langs = env!("LTCC_LANGS")
+            .split(',')
+            .collect::<Vec<&str>>()
+            .join("\n  - ")
+            .green();
+
+        let header = "SUPPORTED LANGUAGES:".yellow();
+        return f!("{header}\n  - {supported_langs}");
+    };
+}
+
+fn build_cli() -> clap::Command<'static> {
+    return clap::Command::new("languagetool-code-comments")
         .about("Submits code comments to the LanguageTool API to provide corrections without trying to spell check your code.")
-        // .version(env!("VERGEN_GIT_SEMVER"))
+        .after_help(SUPPORTED_LANGS_HELP.as_str())
+        .version(env!("VERGEN_GIT_SEMVER"))
         .setting(clap::AppSettings::SubcommandRequiredElseHelp)
         .subcommand(
-            clap::App::new("check")
+            clap::Command::new("check")
                 .arg(
-                    clap::Arg::new("filepath")
-                        .long("filepath")
+                    clap::Arg::new("file")
+                        .long("file")
                         .short('f')
                         .help("Path to source code file.")
+                        .value_hint(clap::ValueHint::FilePath)
                         .takes_value(true)
                         .multiple_values(false),
                 )
@@ -44,7 +62,7 @@ fn build_cli() -> clap::App<'static> {
 
         )
         .subcommand(
-            clap::App::new("completion")
+            clap::Command::new("completion")
                 .about("Generates shell completions")
                 .arg(
                     clap::Arg::new("shell")
@@ -65,10 +83,13 @@ async fn parse_cli() -> Result<()> {
     let matches = build_cli().get_matches();
     match matches.subcommand() {
         Some(("check", run_matches)) => {
-            let filepath = run_matches.value_of("filepath").unwrap().to_string();
-            let language = run_matches.value_of("language").unwrap().to_string();
+            let filepath = run_matches.get_one::<String>("file").unwrap().to_string();
+            let language = run_matches
+                .get_one::<String>("language")
+                .unwrap()
+                .to_string();
             let concurrency = run_matches
-                .value_of("concurrency")
+                .get_one::<String>("concurrency")
                 .unwrap()
                 .parse::<usize>()?;
 

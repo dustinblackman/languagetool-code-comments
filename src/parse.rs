@@ -1,5 +1,9 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
+use async_std::fs;
+use fstrings::*;
 use std::cell::RefCell;
+use std::ffi::OsStr;
+use std::path::Path;
 use tree_sitter::{Language, Node, Parser, Tree};
 use xxhash_rust::xxh3::xxh3_64;
 
@@ -20,6 +24,8 @@ struct CommentLeaf<'a> {
 
 extern "C" {
     fn tree_sitter_typescript() -> Language;
+    fn tree_sitter_tsx() -> Language;
+    fn tree_sitter_rust() -> Language;
 }
 
 /// Parses the provided node searching for CommentLeafs, or further nodes to scan.
@@ -49,12 +55,38 @@ fn get_comment_nodes<'a>(tree: &'a Tree, source_code: &'a str) -> Result<Vec<Com
     return Ok(leaves.into_inner());
 }
 
+/// Uses a file path and it's extension to detect language, and returns an initalized TreeSitter
+/// parser for source code parsing.
+fn get_parser(filepath: &str) -> Result<Parser> {
+    let mut parser = Parser::new();
+    let ext = Path::new(filepath)
+        .extension()
+        .and_then(OsStr::to_str)
+        .unwrap_or_default();
+
+    match ext {
+        "ts" => {
+            parser.set_language(unsafe { tree_sitter_typescript() })?;
+        }
+        "tsx" => {
+            parser.set_language(unsafe { tree_sitter_tsx() })?;
+        }
+        "rs" => {
+            parser.set_language(unsafe { tree_sitter_rust() })?;
+        }
+        _ => {
+            return Err(anyhow!(f!("Can not detect language for file {filepath}")));
+        }
+    }
+
+    return Ok(parser);
+}
+
 /// Converts source code to an array of CodeComment to later be processed by LanguageTool. This
 /// includes tree parsing, and hashing code comments text for deduping and caching.
-pub fn parse_code_comments(source_code: String) -> Result<Vec<CodeComment>> {
-    let language = unsafe { tree_sitter_typescript() };
-    let mut parser = Parser::new();
-    parser.set_language(language)?;
+pub async fn parse_code_comments(filepath: &str) -> Result<Vec<CodeComment>> {
+    let mut parser = get_parser(filepath)?;
+    let source_code = fs::read_to_string(filepath).await?;
     let tree = parser.parse(source_code.clone(), None).unwrap();
 
     let code_comments = get_comment_nodes(&tree, &source_code)?

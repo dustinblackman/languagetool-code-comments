@@ -1,3 +1,6 @@
 [submodule "external/tree-sitter-typescript"]
 	path = external/tree-sitter-typescript
 	url = https://github.com/tree-sitter/tree-sitter-typescript.git
+[submodule "external/tree-sitter-rust"]
+	path = external/tree-sitter-rust
+	url = https://github.com/tree-sitter/tree-sitter-rust.git
