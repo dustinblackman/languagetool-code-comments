@@ -22,7 +22,7 @@ tree-sitter = "0.20.8"
 xxhash-rust = { version = "0.8.5", features = ["xxh3"] }
 url = "2.2.2"
 
-# Enable vendored feature to simplify cross compilation.
+# Enable vendored features to simplify cross compilation.
 reqwest = { version = "0.11.11", default-features = false, features = ["rustls-tls", "json"] }
 
 [dev-dependencies]
@@ -59,10 +59,14 @@ lint-fix = '''set -e
   dprint fmt
 '''
 goreleaser = '''set -e
+  export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
+
   mkdir -p .bin
   rm -f .bin/goreleaser
   curl -L https://github.com/goreleaser/goreleaser/releases/download/v1.10.3/goreleaser_Darwin_x86_64.tar.gz | tar xz - -C .bin goreleaser
-  .bin/goreleaser --rm-dist
+
+  AUR_KEY=$(cat ~/.ssh/aur) .bin/goreleaser --rm-dist
+  tools/nur.sh "$LTCC_VERSION" "$(realpath dist)"
 '''
 release = '''set -e
   cargo build

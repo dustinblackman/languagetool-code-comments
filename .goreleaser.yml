@@ -1,0 +1,83 @@
+project_name: languagetool-code-comments
+builds:
+  - main: ./tools/goreleaser.go
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: arm64
+      - goos: windows
+        goarch: arm64
+    hooks:
+      post: ./tools/goreleaser-dist.sh {{ .Target }}
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"
+archives:
+  - format_overrides:
+    - goos: windows
+      format: zip
+signs:
+  - artifacts: checksum
+    args: ["-u", "6A34CFEE77FE8257C3BB92FE24C3FC5D6987904B", "--output", "${signature}", "--detach-sign", "${artifact}"]
+
+brews:
+  - tap:
+      owner: dustinblackman
+      name: homebrew-tap
+    folder: Formula
+    homepage: https://github.com/dustinblackman/languagetool-code-comments
+    description: Integrates the LanguageTool API to parse, spell check, and correct grammar of your code comments!
+    test: |
+      system "#{bin}/languagetool-code-comments --version"
+    install: |
+      # Install languagetool-code-comments
+      bin.install "languagetool-code-comments"
+
+      # Install shell completions
+      output = Utils.safe_popen_read("#{bin}/languagetool-code-comments", "completion", "-s", "bash")
+      (bash_completion/"languagetool-code-comments").write output
+
+      output = Utils.safe_popen_read("#{bin}/languagetool-code-comments", "completion", "-s", "zsh")
+      (zsh_completion/"_languagetool-code-comments").write output
+
+      output = Utils.safe_popen_read("#{bin}/languagetool-code-comments", "completion", "-s", "fish")
+      (fish_completion/"languagetool-code-comments.fish").write output
+
+scoop:
+  bucket:
+    owner: dustinblackman
+    name: scoop-bucket
+  homepage: https://github.com/dustinblackman/languagetool-code-comments
+  description: Integrates the LanguageTool API to parse, spell check, and correct grammar of your code comments!
+  license: MIT
+
+nfpms:
+  - homepage: https://github.com/dustinblackman/languagetool-code-comments
+    description: Integrates the LanguageTool API to parse, spell check, and correct grammar of your code comments!
+    maintainer: Dustin Blackman
+    vendor: Dustin Blackman
+    formats:
+      - deb
+      - rpm
+
+aurs:
+  - name: languagetool-code-comments-bin
+    homepage: https://github.com/dustinblackman/languagetool-code-comments
+    description: "Software to create fast and easy drum rolls."
+    maintainers:
+      - "Dustin Blackman"
+    contributors:
+      - "Dustin Blackman"
+    license: "MIT"
+    private_key: "{{ .Env.AUR_KEY }}"
+    git_url: "ssh://aur@aur.archlinux.org/languagetool-code-comments-bin.git"
+
+changelog:
+  use: github-native
