@@ -22,3 +22,6 @@
 [submodule "external/cross"]
 	path = external/cross
 	url = https://github.com/cross-rs/cross.git
+[submodule "external/tree-sitter-hcl"]
+	path = external/tree-sitter-hcl
+	url = https://github.com/MichaHoffmann/tree-sitter-hcl

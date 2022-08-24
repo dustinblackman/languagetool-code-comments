@@ -21,6 +21,15 @@ async fn test_go() -> Result<()> {
 }
 
 #[tokio::test]
+async fn test_hcl() -> Result<()> {
+    let res = parse_code_comments("./tests/fixtures/hcl.tf").await?;
+    expect!(res.len()).to(be_equal_to(2));
+    expect!(res[0].text.to_owned()).to(be_equal_to("# I am comment number one."));
+
+    return Ok(());
+}
+
+#[tokio::test]
 async fn test_javascript() -> Result<()> {
     let res = parse_code_comments("./tests/fixtures/javascript.js").await?;
     expect!(res.len()).to(be_equal_to(2));

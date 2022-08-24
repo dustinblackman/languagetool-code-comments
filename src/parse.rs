@@ -29,6 +29,7 @@ struct CommentLeaf<'a> {
 extern "C" {
     fn tree_sitter_bash() -> Language;
     fn tree_sitter_go() -> Language;
+    fn tree_sitter_hcl() -> Language;
     fn tree_sitter_javascript() -> Language;
     fn tree_sitter_typescript() -> Language;
     fn tree_sitter_tsx() -> Language;
@@ -96,6 +97,9 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         }
         "rs" => {
             parser.set_language(unsafe { tree_sitter_rust() })?;
+        }
+        "tf" => {
+            parser.set_language(unsafe { tree_sitter_hcl() })?;
         }
         _ => {
             return Err(anyhow!(f!("Can not detect language for file {filepath}")));
