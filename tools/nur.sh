@@ -8,6 +8,6 @@ TMPDIR="$(mktemp -d)"
 
 cd "$TMPDIR"
 git clone --depth 1 git@github.com:dustinblackman/nur-packages.git .
-./scripts/goreleaser.sh gomodrun "$VERSION" "${DIST}/languagetool-code-comments_${VERSION}_linux_amd64.tar.gz"
+./scripts/goreleaser.sh languagetool-code-comments "$VERSION" "${DIST}/languagetool-code-comments_${VERSION}_linux_amd64.tar.gz"
 cd ~
 rm -rf "$TMPDIR"
