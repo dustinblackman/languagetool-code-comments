@@ -63,7 +63,7 @@ fn get_comment_nodes<'a>(tree: &'a Tree, source_code: &'a str) -> Result<Vec<Com
     return Ok(leaves.into_inner());
 }
 
-/// Uses a file path and it's extension to detect language, and returns an initalized TreeSitter
+/// Uses a file path, and its extension to detect language, and returns an initalized TreeSitter
 /// parser for source code parsing.
 fn get_parser(filepath: &str) -> Result<Parser> {
     let mut parser = Parser::new();
