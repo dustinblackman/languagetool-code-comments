@@ -33,7 +33,7 @@ brews:
       name: homebrew-tap
     folder: Formula
     homepage: https://github.com/dustinblackman/languagetool-code-comments
-    description: Integrates the LanguageTool API to parse, spell check, and correct grammar of your code comments!
+    description: Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!
     test: |
       system "#{bin}/languagetool-code-comments --version"
     install: |
@@ -55,12 +55,12 @@ scoop:
     owner: dustinblackman
     name: scoop-bucket
   homepage: https://github.com/dustinblackman/languagetool-code-comments
-  description: Integrates the LanguageTool API to parse, spell check, and correct grammar of your code comments!
+  description: Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!
   license: MIT
 
 nfpms:
   - homepage: https://github.com/dustinblackman/languagetool-code-comments
-    description: Integrates the LanguageTool API to parse, spell check, and correct grammar of your code comments!
+    description: Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!
     maintainer: Dustin Blackman
     vendor: Dustin Blackman
     formats:
@@ -70,13 +70,13 @@ nfpms:
 aurs:
   - name: languagetool-code-comments-bin
     homepage: https://github.com/dustinblackman/languagetool-code-comments
-    description: "Software to create fast and easy drum rolls."
+    description: Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!
     maintainers:
       - "Dustin Blackman"
     contributors:
       - "Dustin Blackman"
     license: "MIT"
-    private_key: "{{ .Env.AUR_KEY }}"
+    private_key: "~/.ssh/aur"
     git_url: "ssh://aur@aur.archlinux.org/languagetool-code-comments-bin.git"
 
 changelog:

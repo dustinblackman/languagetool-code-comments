@@ -61,7 +61,6 @@ impl Client {
                 return e.rule.id != "WHITESPACE_RULE";
             })
             .map(|e| {
-                // TODO remove clone.
                 return e.to_owned();
             })
             .collect::<Vec<Match>>();

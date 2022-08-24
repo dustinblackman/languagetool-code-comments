@@ -27,7 +27,7 @@ lazy_static! {
 
 fn build_cli() -> clap::Command<'static> {
     return clap::Command::new("languagetool-code-comments")
-        .about("Submits code comments to the LanguageTool API to provide grammar and spelling corrections directly in your terminal or editor.")
+        .about("Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!")
         .after_help(SUPPORTED_LANGS_HELP.as_str())
         .version(env!("VERGEN_GIT_SEMVER"))
         .setting(clap::AppSettings::SubcommandRequiredElseHelp)

@@ -16,23 +16,19 @@ pub async fn check(
     let cached_match_map = cache::get_cached_matches(&filepath).await?;
     let code_comments = parse::parse_code_comments(&filepath).await?;
 
-    // This is new one that'll be populated.
-    // TODO better comment.
-    let mut result_match_map: HashMap<u64, Vec<Match>> = HashMap::new();
-
     // Creates a hashmap with checksums of all the code comments. This is later used to dedupe
     // requests to LanguageTool for codebases that have reoccuring comments in the same file.
-    let mut text_checksum_map: HashMap<u64, String> = HashMap::new();
+    let mut comments_checksum_map: HashMap<u64, String> = HashMap::new();
     for code_comment in code_comments.iter() {
-        text_checksum_map.insert(code_comment.text_checksum, code_comment.text.to_owned());
+        comments_checksum_map.insert(code_comment.text_checksum, code_comment.text.to_owned());
     }
 
-    let query_requests = text_checksum_map
+    let mut result_match_map: HashMap<u64, Vec<Match>> = HashMap::new();
+    let query_requests = comments_checksum_map
         .into_iter()
         .filter(|(text_checksum, _text)| {
             if cached_match_map.contains_key(text_checksum) {
                 let res = cached_match_map.get(text_checksum).unwrap();
-                // TODO remove clone?
                 result_match_map.insert(text_checksum.to_owned(), res.to_vec());
                 return false;
             }
