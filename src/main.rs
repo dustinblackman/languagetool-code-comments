@@ -67,7 +67,7 @@ fn build_cli() -> clap::Command<'static> {
                         .long("language")
                         .short('l')
                         .default_value("auto")
-                        .help("Written language of code comment blocks. Setting this to a language code (en, fr, es) will speed up requests to LanguageTool.")
+                        .help("Written language of code comment blocks. Setting this to a language code (en-US, fr-FR, es-MX) will speed up requests to LanguageTool.")
                         .takes_value(true)
                         .multiple_values(false),
                 ),
