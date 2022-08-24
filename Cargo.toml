@@ -19,8 +19,8 @@ serde = { version = "1.0.143", features = ["derive"] }
 serde_json = "1.0.83"
 tokio = { version = "1.20.1", features = ["macros"] }
 tree-sitter = "0.20.8"
-xxhash-rust = { version = "0.8.5", features = ["xxh3"] }
 url = "2.2.2"
+xxhash-rust = { version = "0.8.5", features = ["xxh3"] }
 
 # Enable vendored features to simplify cross compilation.
 reqwest = { version = "0.11.11", default-features = false, features = ["rustls-tls", "json"] }
@@ -67,6 +67,7 @@ goreleaser = '''set -e
   curl -L https://github.com/goreleaser/goreleaser/releases/download/v1.10.3/goreleaser_Darwin_x86_64.tar.gz | tar xz - -C .bin goreleaser
 
   .bin/goreleaser --rm-dist
+  tools/apt.sh "$LTCC_VERSION" "$(realpath dist)"
   tools/nur.sh "$LTCC_VERSION" "$(realpath dist)"
 '''
 release = '''set -e
@@ -79,6 +80,7 @@ release = '''set -e
 
   cargo build
   cargo bin rust-script ./tools/update-readme.rs
+  dprint fmt
   git add .
   git rebase --append -m "v$LTCC_VERSION"
 

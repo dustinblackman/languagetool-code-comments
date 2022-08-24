@@ -9,6 +9,7 @@
 Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several programming languages. And if privacy is a concern, and you have some spare hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
 
 <!-- command-help start -->
+
 ```
 languagetool-code-comments 0.1.0
 Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
@@ -31,6 +32,7 @@ SUBCOMMANDS:
 SUPPORTED LANGUAGES:
   - bash
   - go
+  - hcl
   - javascript
   - jsx
   - python
@@ -38,4 +40,14 @@ SUPPORTED LANGUAGES:
   - tsx
   - typescript
 ```
+
 <!-- command-help end -->
+
+## Install
+
+### Debian / Ubuntu
+
+```sh
+curl -s https://dustinblackman.github.io/apt/deb/KEY.gpg | apt-key add -
+curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
+```
