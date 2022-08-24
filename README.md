@@ -66,7 +66,7 @@ curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/
 #### Nix
 
 ```sh
-nix-env -f '<nixpkgs>' -iA nur.repos.dustinblackman.gomodrun
+nix-env -f '<nixpkgs>' -iA nur.repos.dustinblackman.languagetool-code-comments
 ```
 
 #### Aur
@@ -106,4 +106,11 @@ languagetool-code-comments check -l en-US --file /home/me/my-test-file.rs
 
 #### Neovim
 
+See [./tools/null-ls-config.lua](./tools/null-ls-config.lua)
+
+The above uses [`null-ls`](https://github.com/jose-elias-alvarez/null-ls.nvim), and is based off the soon-to-be
+[`ltrs`](https://github.com/jose-elias-alvarez/null-ls.nvim/pull/997) configuration. Once I feel `languagetool-code-comments` responses have stabilized, I'll attempt PRing the configs to `null-rs` itself.
+
 #### Visual Studio Code
+
+Coming Soon! Follow https://github.com/dustinblackman/languagetool-code-comments/issues/1 for updates.
