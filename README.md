@@ -8,6 +8,11 @@
 
 Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several programming languages. And if privacy is a concern, and you have some spare hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
 
+**Contents:**
+
+- [Install](#Install)
+- [Usage](#Usage)
+
 <!-- command-help start -->
 
 ```
@@ -45,9 +50,60 @@ SUPPORTED LANGUAGES:
 
 ## Install
 
-### Debian / Ubuntu
+#### MacOS
+
+```sh
+brew install dustinblackman/tab/languagetool-code-comments
+```
+
+#### Debian / Ubuntu
 
 ```sh
 curl -s https://dustinblackman.github.io/apt/deb/KEY.gpg | apt-key add -
 curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
 ```
+
+#### Nix
+
+```sh
+nix-env -f '<nixpkgs>' -iA nur.repos.dustinblackman.gomodrun
+```
+
+#### Aur
+
+```sh
+yay -S languagetool-code-comments-bin
+```
+
+#### Windows
+
+```sh
+scoop bucket add dustinblackman https://github.com/dustinblackman/scoop-bucket.git
+scoop install languagetool-code-comments
+```
+
+#### Manual
+
+Download the pre-compiled binaries and packages from the [releases page](https://github.com/dustinblackman/languagetool-code-comments/releases) and
+copy to the desired location.
+
+#### Source
+
+```sh
+git clone https://github.com/dustinblackman/languagetool-code-comments.git
+cd languagetool-code-comments
+git submodule update --init --recursive
+cargo install --path .
+```
+
+## Usage
+
+#### CLI
+
+```sh
+languagetool-code-comments check -l en-US --file /home/me/my-test-file.rs
+```
+
+#### Neovim
+
+#### Visual Studio Code
