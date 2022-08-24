@@ -47,7 +47,7 @@ impl Client {
     /// issues related to whitespacing (code comments are full of them naturally).
     pub async fn query(&self, request: QueryRequest) -> Result<QueryResult> {
         let mut req = CheckRequest::default()
-            .with_language("en".to_string())
+            .with_language(request.language)
             .with_text(request.text.clone());
         req.more_context = true;
 
