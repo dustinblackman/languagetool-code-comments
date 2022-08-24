@@ -51,44 +51,44 @@ SUPPORTED LANGUAGES:
 
 ## Install
 
-#### MacOS
+### MacOS
 
 ```sh
 brew install dustinblackman/tab/languagetool-code-comments
 ```
 
-#### Debian / Ubuntu
+### Debian / Ubuntu
 
 ```sh
 curl -s https://dustinblackman.github.io/apt/deb/KEY.gpg | apt-key add -
 curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
 ```
 
-#### Nix
+### Nix
 
 ```sh
 nix-env -f '<nixpkgs>' -iA nur.repos.dustinblackman.languagetool-code-comments
 ```
 
-#### Aur
+### Aur
 
 ```sh
 yay -S languagetool-code-comments-bin
 ```
 
-#### Windows
+### Windows
 
 ```sh
 scoop bucket add dustinblackman https://github.com/dustinblackman/scoop-bucket.git
 scoop install languagetool-code-comments
 ```
 
-#### Manual
+### Manual
 
 Download the pre-compiled binaries and packages from the [releases page](https://github.com/dustinblackman/languagetool-code-comments/releases) and
 copy to the desired location.
 
-#### Source
+### Source
 
 ```sh
 git clone https://github.com/dustinblackman/languagetool-code-comments.git
@@ -99,26 +99,26 @@ cargo install --path .
 
 ## Usage
 
-#### CLI
+### CLI
 
 ```sh
 languagetool-code-comments check -l en-US --file /home/me/my-test-file.rs
 ```
 
-#### Neovim
+### Neovim
 
 See [./tools/null-ls-config.lua](./tools/null-ls-config.lua)
 
 The above uses [`null-ls`](https://github.com/jose-elias-alvarez/null-ls.nvim), and is based off the soon-to-be
 [`ltrs`](https://github.com/jose-elias-alvarez/null-ls.nvim/pull/997) configuration. Once I feel `languagetool-code-comments` responses have stabilized, I'll attempt PRing the configs to `null-rs` itself.
 
-#### Visual Studio Code
+### Visual Studio Code
 
 Coming Soon! Follow https://github.com/dustinblackman/languagetool-code-comments/issues/1 for updates.
 
 ## Development
 
-#### Adding a new language
+### Adding a new language
 
 Let's take the following steps to add Perl to `languagetool-code-comments`, as example which will take you from selecting the Tree
 Sitter config, to integrating the language in the repo, writing tests, and QAing. If you'd like to check out a complete example,
