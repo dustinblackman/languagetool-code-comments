@@ -6,7 +6,7 @@
 
 `languagetool-code-comments` integrations the LanguageTool API to parse, spell check, and correct the grammar of your code comments! Never will you submit a PR where you fat fingered `// This is a hck` in your code again. LTCC can be integrated directly in your editor, or used in a linting fashion in your CI pipelines. Caching is built in to speed up processing new and edited docs.
 
-Using the power of [TreeSitter](https://github.com/tree-sitter/tree-sitter), LTCC easily integrates with several languages. If privacy is a concern, and you have some space hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
+Using the power of [TreeSitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several languages. If privacy is a concern, and you have some space hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
 
 <!-- command-help start -->
 ```
