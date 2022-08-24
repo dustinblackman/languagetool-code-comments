@@ -1,0 +1,33 @@
+on: [push, pull_request]
+
+name: ci
+
+jobs:
+  build_and_test:
+    name: languagetool-code-comments
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install deps
+        run: |
+          git submodule update --init --recursive
+          cargo install cargo-cmd cargo-run-bin "dprint@$(cat Cargo.toml | grep dprint | awk -F '"' '{print $2}' | head -n 1)"
+      - name: Setup nightly
+        run: cargo cmd setup-nightly
+      - name: Lint
+        run: cargo cmd lint
+      - name: Test
+        run: cargo cmd test-coverage-lcov
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./lcov.info

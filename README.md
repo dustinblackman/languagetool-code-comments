@@ -4,15 +4,15 @@
 [![Release](https://img.shields.io/github/v/release/dustinblackman/languagetool-code-comments)](https://github.com/dustinblackman/languagetool-code-comments/releases)
 [![Coverage Status](https://coveralls.io/repos/github/dustinblackman/languagetool-code-comments/badge.svg?branch=master)](https://coveralls.io/github/dustinblackman/languagetool-code-comments?branch=master)
 
-`languagetool-code-comments` integrations the LanguageTool API to parse, spell check, and correct the grammar of your code comments! Never will you submit a PR where you fat fingered `// This is a hck` in your code again. LTCC can be integrated directly in your editor, or used in a linting fashion in your CI pipelines. Caching is built in to speed up processing new and edited docs.
+`languagetool-code-comments` integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments! Never will you submit a PR where you fat-fingered `// This is a hck` in your code again. LTCC can be integrated directly in your editor, or used in a linting fashion in your CI pipelines. Caching is built in to speed up processing new and edited docs.
 
-Using the power of [TreeSitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several languages. If privacy is a concern, and you have some space hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
+Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several programming languages. And if privacy is a concern, and you have some spare hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
 
 <!-- command-help start -->
 ```
 languagetool-code-comments 0.1.0
-Submits code comments to the LanguageTool API to provide grammar and spelling corrections directly
-in your terminal or editor.
+Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
+comments!
 
 USAGE:
     languagetool-code-comments <SUBCOMMAND>
