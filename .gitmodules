@@ -43,3 +43,6 @@
 [submodule "external/tree-sitter-dockerfile"]
 	path = external/tree-sitter-dockerfile
 	url = https://github.com/camdencheek/tree-sitter-dockerfile.git
+[submodule "external/tree-sitter-sql"]
+	path = external/tree-sitter-sql
+	url = https://github.com/m-novikov/tree-sitter-sql.git

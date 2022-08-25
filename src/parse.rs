@@ -27,7 +27,7 @@ struct CommentLeaf<'a> {
 }
 
 extern "C" {
-    fn tree_sitter_bash() -> Language;
+ fn tree_sitter_bash() -> Language;
     fn tree_sitter_css() -> Language;
     fn tree_sitter_dockerfile() -> Language;
     fn tree_sitter_go() -> Language;
@@ -38,6 +38,7 @@ extern "C" {
     fn tree_sitter_make() -> Language;
     fn tree_sitter_python() -> Language;
     fn tree_sitter_rust() -> Language;
+    fn tree_sitter_sql() -> Language;
     fn tree_sitter_toml() -> Language;
     fn tree_sitter_tsx() -> Language;
     fn tree_sitter_typescript() -> Language;
@@ -120,6 +121,9 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         }
         "rs" => {
             parser.set_language(unsafe { tree_sitter_rust() })?;
+        }
+        "sql" => {
+            parser.set_language(unsafe { tree_sitter_sql() })?;
         }
         "tf" => {
             parser.set_language(unsafe { tree_sitter_hcl() })?;

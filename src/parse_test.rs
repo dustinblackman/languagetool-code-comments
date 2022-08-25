@@ -93,6 +93,15 @@ async fn test_make() -> Result<()> {
     return Ok(());
 }
 
+#[tokio::test]
+async fn test_sql() -> Result<()> {
+    let res = parse_code_comments("./tests/fixtures/sql.sql").await?;
+    expect!(res.len()).to(be_equal_to(2));
+    expect!(res[0].text.to_owned()).to(be_equal_to("--  I am comment number one."));
+
+    return Ok(());
+}
+
 
 #[tokio::test]
 async fn test_toml() -> Result<()> {
