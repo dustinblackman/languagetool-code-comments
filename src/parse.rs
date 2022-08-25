@@ -28,6 +28,7 @@ struct CommentLeaf<'a> {
 
 extern "C" {
     fn tree_sitter_bash() -> Language;
+    fn tree_sitter_css() -> Language;
     fn tree_sitter_go() -> Language;
     fn tree_sitter_hcl() -> Language;
     fn tree_sitter_javascript() -> Language;
@@ -76,6 +77,9 @@ fn get_parser(filepath: &str) -> Result<Parser> {
     match ext {
         "sh" => {
             parser.set_language(unsafe { tree_sitter_bash() })?;
+        }
+        "css" => {
+            parser.set_language(unsafe { tree_sitter_css() })?;
         }
         "go" => {
             parser.set_language(unsafe { tree_sitter_go() })?;

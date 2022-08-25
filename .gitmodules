@@ -25,3 +25,6 @@
 [submodule "external/tree-sitter-hcl"]
 	path = external/tree-sitter-hcl
 	url = https://github.com/MichaHoffmann/tree-sitter-hcl
+[submodule "external/tree-sitter-css"]
+	path = external/tree-sitter-css
+	url = https://github.com/tree-sitter/tree-sitter-css.git
