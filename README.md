@@ -4,15 +4,30 @@
 [![Release](https://img.shields.io/github/v/release/dustinblackman/languagetool-code-comments)](https://github.com/dustinblackman/languagetool-code-comments/releases)
 [![Coverage Status](https://coveralls.io/repos/github/dustinblackman/languagetool-code-comments/badge.svg?branch=master)](https://coveralls.io/github/dustinblackman/languagetool-code-comments?branch=master)
 
-`languagetool-code-comments` integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments! Never will you submit a PR where you fat-fingered `// This is a hck` in your code again. LTCC can be integrated directly in your editor, or used in a linting fashion in your CI pipelines. Caching is built in to speed up processing new and edited docs.
+> `languagetool-code-comments` integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!
+
+- [Overview](#Overview)
+- [Install](#Install)
+  - [MacOS](#macos)
+  - [Debian / Ubuntu](#debian--ubuntu)
+  - [Nix](#nix)
+  - [Arch Linux](#arch-linux)
+  - [Windows](#windows)
+  - [Manual](#manual)
+  - [Source](#source)
+- [Usage](#Usage)
+  - [CLI](#cli)
+  - [Neovim](#neovim)
+  - [Visual Studio Code](#visual-studio-code)
+- [Development](#Development)
+  - [Setup](#setup)
+  - [Adding a new language](#adding-a-new-language)
+
+## Overview
+
+Never will you submit a PR where you fat-fingered `// This is a hck` in your code again. LTCC can be integrated directly in your editor, or used in a linting fashion in your CI pipelines. Caching is built in to speed up processing new and edited docs.
 
 Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several programming languages. And if privacy is a concern, and you have some spare hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
-
-**Contents:**
-
-- [Install](#Install)
-- [Usage](#Usage)
-- [Development](#Development)
 
 <!-- command-help start -->
 
@@ -70,7 +85,7 @@ curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/
 nix-env -f '<nixpkgs>' -iA nur.repos.dustinblackman.languagetool-code-comments
 ```
 
-### Aur
+### Arch Linux
 
 ```sh
 yay -S languagetool-code-comments-bin
@@ -118,30 +133,32 @@ Coming Soon! Follow https://github.com/dustinblackman/languagetool-code-comments
 
 ## Development
 
+### Setup
+
+```sh
+git clone https://github.com/dustinblackman/languagetool-code-comments.git
+cd languagetool-code-comments
+git submodule update --init --recursive
+cargo check
+```
+
 ### Adding a new language
 
 Let's take the following steps to add Perl to `languagetool-code-comments`, as example which will take you from selecting the Tree
 Sitter config, to integrating the language in the repo, writing tests, and QAing. If you'd like to check out a complete example,
 see [add HCL](https://github.com/dustinblackman/languagetool-code-comments/commit/4bbba4ceba9553a64a8c921afc61fc014987354a).
 
-1. Git clone the repo and pull in the sub modules.
-
-```sh
-git clone https://github.com/dustinblackman/languagetool-code-comments.git
-cd languagetool-code-comments
-git submodule update --init --recursive
-```
-
+1. Follow the [setup](#setup) for the project.
 2. Head over to the [Tree Sitter Parsers](https://tree-sitter.github.io/tree-sitter/#available-parsers) docs and select the Perl parser.
 3. Add the repo as a submodule with `git submodule add https://github.com/ganezdragon/tree-sitter-perl ./external/tree-sitter-perl`
-4. Update [`build.rs`](./build.rs) by adding a configuration for Perl in the `langs` vec. Perl has both a `parser.c` and `scanner.cc` build, so the configuration would look like the following.
+4. Update [`build.rs`](./build.rs) by adding a configuration for Perl in the `langs` vec. Perl includes both a `parser.c` and `scanner.cc`, so the configuration would look like the following.
 
 ```rust
-  build_treesitter_grammar(
-      "tree-sitter-perl",
-      "tree-sitter-perl/src",
-      vec!["parser.c", "scanner.cc"],
-  ),
+build_treesitter_grammar(
+    "tree-sitter-perl",
+    "tree-sitter-perl/src",
+    vec!["parser.c", "scanner.cc"],
+),
 ```
 
 5. Run `cargo build` to verify the configuration is set up correctly.
