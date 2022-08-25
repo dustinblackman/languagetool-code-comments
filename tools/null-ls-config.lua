@@ -66,6 +66,23 @@ local handle_ltcc_diag_output = function(params)
 	return {}
 end
 
+local lctt_filetypes = {
+	"bash",
+	"css",
+	"dockerfile",
+	"go",
+	"html",
+	"javascript",
+	"lua",
+	"make",
+	"python",
+	"rust",
+	"sql",
+	"terraform",
+	"toml",
+	"typescript",
+}
+
 local ltcc_code_action = null_ls_helpers.make_builtin({
 	name = "ltcc",
 	meta = {
@@ -73,7 +90,7 @@ local ltcc_code_action = null_ls_helpers.make_builtin({
 		description = "languagetool-code-comments integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!",
 	},
 	method = CODE_ACTION,
-	filetypes = { "bash", "go", "javascript", "typescript", "rust", "python", "terraform" },
+	filetypes = lctt_filetypes,
 	generator_opts = {
 		command = "languagetool-code-comments",
 		args = { "check", "-l", "en-US", "-f", "$FILENAME" },
@@ -95,7 +112,7 @@ local ltcc_diag = null_ls_helpers.make_builtin({
 		description = "languagetool-code-comments integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!",
 	},
 	method = DIAGNOSTICS,
-	filetypes = { "bash", "go", "javascript", "typescript", "rust", "python", "terraform" },
+	filetypes = lctt_filetypes,
 	generator_opts = {
 		command = "languagetool-code-comments",
 		args = { "check", "-l", "en-US", "-f", "$FILENAME" },
