@@ -21,6 +21,16 @@ async fn test_css() -> Result<()> {
 }
 
 #[tokio::test]
+async fn test_dockerfile() -> Result<()> {
+    let res = parse_code_comments("./tests/fixtures/Dockerfile").await?;
+    expect!(res.len()).to(be_equal_to(2));
+    expect!(res[0].text.to_owned()).to(be_equal_to("# I am comment number one."));
+
+    return Ok(());
+}
+
+
+#[tokio::test]
 async fn test_go() -> Result<()> {
     let res = parse_code_comments("./tests/fixtures/golang.go").await?;
     expect!(res.len()).to(be_equal_to(2));

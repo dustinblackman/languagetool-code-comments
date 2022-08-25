@@ -59,6 +59,11 @@ fn main() {
             "tree-sitter-css/src",
             vec!["parser.c", "scanner.c"],
         ),
+        build_treesitter_grammar(
+            "tree-sitter-dockerfile",
+            "tree-sitter-dockerfile/src",
+            vec!["parser.c"],
+        ),
         build_treesitter_grammar("tree-sitter-go", "tree-sitter-go/src", vec!["parser.c"]),
         build_treesitter_grammar(
             "tree-sitter-hcl",

@@ -40,3 +40,6 @@
 [submodule "external/tree-sitter-toml"]
 	path = external/tree-sitter-toml
 	url = https://github.com/ikatyang/tree-sitter-toml.git
+[submodule "external/tree-sitter-dockerfile"]
+	path = external/tree-sitter-dockerfile
+	url = https://github.com/camdencheek/tree-sitter-dockerfile.git
