@@ -37,3 +37,6 @@
 [submodule "external/tree-sitter-make"]
 	path = external/tree-sitter-make
 	url = https://github.com/alemuller/tree-sitter-make.git
+[submodule "external/tree-sitter-toml"]
+	path = external/tree-sitter-toml
+	url = https://github.com/ikatyang/tree-sitter-toml.git

@@ -1,0 +1,4 @@
+# I am comment number one.
+[message]
+# I am a comment number two
+hello = "world"

@@ -37,6 +37,7 @@ extern "C" {
     fn tree_sitter_make() -> Language;
     fn tree_sitter_python() -> Language;
     fn tree_sitter_rust() -> Language;
+    fn tree_sitter_toml() -> Language;
     fn tree_sitter_tsx() -> Language;
     fn tree_sitter_typescript() -> Language;
 }
@@ -103,6 +104,9 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         }
         "lua" => {
             parser.set_language(unsafe { tree_sitter_lua() })?;
+        }
+        "toml" => {
+            parser.set_language(unsafe { tree_sitter_toml() })?;
         }
         "ts" => {
             parser.set_language(unsafe { tree_sitter_typescript() })?;

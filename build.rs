@@ -83,6 +83,11 @@ fn main() {
         ),
         build_treesitter_grammar("tree-sitter-make", "tree-sitter-make/src", vec!["parser.c"]),
         build_treesitter_grammar(
+            "tree-sitter-toml",
+            "tree-sitter-toml/src",
+            vec!["parser.c", "scanner.c"],
+        ),
+        build_treesitter_grammar(
             "tree-sitter-typescript",
             "tree-sitter-typescript/typescript/src",
             vec!["parser.c", "scanner.c"],
