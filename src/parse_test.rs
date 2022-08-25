@@ -29,7 +29,6 @@ async fn test_dockerfile() -> Result<()> {
     return Ok(());
 }
 
-
 #[tokio::test]
 async fn test_go() -> Result<()> {
     let res = parse_code_comments("./tests/fixtures/golang.go").await?;
@@ -101,7 +100,6 @@ async fn test_sql() -> Result<()> {
 
     return Ok(());
 }
-
 
 #[tokio::test]
 async fn test_toml() -> Result<()> {

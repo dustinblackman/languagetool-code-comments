@@ -27,7 +27,7 @@ struct CommentLeaf<'a> {
 }
 
 extern "C" {
- fn tree_sitter_bash() -> Language;
+    fn tree_sitter_bash() -> Language;
     fn tree_sitter_css() -> Language;
     fn tree_sitter_dockerfile() -> Language;
     fn tree_sitter_go() -> Language;
@@ -76,10 +76,7 @@ fn get_comment_nodes<'a>(tree: &'a Tree, source_code: &'a str) -> Result<Vec<Com
 fn get_parser(filepath: &str) -> Result<Parser> {
     let mut parser = Parser::new();
     let pb = Path::new(filepath);
-    let mut ext = pb
-        .extension()
-        .and_then(OsStr::to_str)
-        .unwrap_or_default();
+    let mut ext = pb.extension().and_then(OsStr::to_str).unwrap_or_default();
 
     if ext.is_empty() {
         ext = pb.file_name().and_then(OsStr::to_str).unwrap_or_default();
