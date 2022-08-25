@@ -34,6 +34,7 @@ extern "C" {
     fn tree_sitter_html() -> Language;
     fn tree_sitter_javascript() -> Language;
     fn tree_sitter_lua() -> Language;
+    fn tree_sitter_make() -> Language;
     fn tree_sitter_python() -> Language;
     fn tree_sitter_rust() -> Language;
     fn tree_sitter_tsx() -> Language;
@@ -67,14 +68,19 @@ fn get_comment_nodes<'a>(tree: &'a Tree, source_code: &'a str) -> Result<Vec<Com
     return Ok(leaves.into_inner());
 }
 
-/// Uses a file path, and its extension to detect language, and returns an initalized TreeSitter
+/// Uses a file path, and its extension to detect language, and returns an initialized Tree Sitter.
 /// parser for source code parsing.
 fn get_parser(filepath: &str) -> Result<Parser> {
     let mut parser = Parser::new();
-    let ext = Path::new(filepath)
+    let pb = Path::new(filepath);
+    let mut ext = pb
         .extension()
         .and_then(OsStr::to_str)
         .unwrap_or_default();
+
+    if ext.is_empty() {
+        ext = pb.file_name().and_then(OsStr::to_str).unwrap_or_default();
+    }
 
     match ext {
         "sh" => {
@@ -112,6 +118,9 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         }
         "tf" => {
             parser.set_language(unsafe { tree_sitter_hcl() })?;
+        }
+        "Makefile" => {
+            parser.set_language(unsafe { tree_sitter_make() })?;
         }
         _ => {
             return Err(anyhow!(f!("Can not detect language for file {filepath}")));
