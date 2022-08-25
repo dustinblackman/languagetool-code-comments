@@ -1,6 +1,6 @@
 ![languagetool-code-comments](.github/banner.jpg)
 
-[![Build Status](https://img.shields.io/github/workflow/status/dustinblackman/languagetool-code-comments/Test?branch=main)](https://github.com/dustinblackman/languagetool-code-comments/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/dustinblackman/languagetool-code-comments/ci?branch=main)](https://github.com/dustinblackman/languagetool-code-comments/actions)
 [![Release](https://img.shields.io/github/v/release/dustinblackman/languagetool-code-comments)](https://github.com/dustinblackman/languagetool-code-comments/releases)
 [![Coverage Status](https://coveralls.io/repos/github/dustinblackman/languagetool-code-comments/badge.svg?branch=main)](https://coveralls.io/github/dustinblackman/languagetool-code-comments?branch=main)
 
