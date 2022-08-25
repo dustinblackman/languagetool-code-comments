@@ -2,7 +2,7 @@
 
 [![Build Status](https://img.shields.io/github/workflow/status/dustinblackman/languagetool-code-comments/Test?branch=main)](https://github.com/dustinblackman/languagetool-code-comments/actions)
 [![Release](https://img.shields.io/github/v/release/dustinblackman/languagetool-code-comments)](https://github.com/dustinblackman/languagetool-code-comments/releases)
-[![Coverage Status](https://coveralls.io/repos/github/dustinblackman/languagetool-code-comments/badge.svg?branch=master)](https://coveralls.io/github/dustinblackman/languagetool-code-comments?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/dustinblackman/languagetool-code-comments/badge.svg?branch=main)](https://coveralls.io/github/dustinblackman/languagetool-code-comments?branch=main)
 
 > `languagetool-code-comments` integrates the LanguageTool API to parse, spell check, and correct the grammar of your code comments!
 
