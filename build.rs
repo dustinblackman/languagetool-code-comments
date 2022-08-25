@@ -77,6 +77,11 @@ fn main() {
         ),
         "jsx".to_string(),
         build_treesitter_grammar(
+            "tree-sitter-lua",
+            "tree-sitter-lua/src",
+            vec!["parser.c", "scanner.c"],
+        ),
+        build_treesitter_grammar(
             "tree-sitter-typescript",
             "tree-sitter-typescript/typescript/src",
             vec!["parser.c", "scanner.c"],

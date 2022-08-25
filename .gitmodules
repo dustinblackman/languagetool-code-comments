@@ -31,3 +31,6 @@
 [submodule "external/tree-sitter-html"]
 	path = external/tree-sitter-html
 	url = https://github.com/tree-sitter/tree-sitter-html.git
+[submodule "external/tree-sitter-lua"]
+	path = external/tree-sitter-lua
+	url = https://github.com/Azganoth/tree-sitter-lua.git
