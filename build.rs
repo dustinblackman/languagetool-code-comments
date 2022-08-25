@@ -66,6 +66,11 @@ fn main() {
             vec!["parser.c", "scanner.cc"],
         ),
         build_treesitter_grammar(
+            "tree-sitter-html",
+            "tree-sitter-html/src",
+            vec!["parser.c", "scanner.cc"],
+        ),
+        build_treesitter_grammar(
             "tree-sitter-javascript",
             "tree-sitter-javascript/src",
             vec!["parser.c", "scanner.c"],
