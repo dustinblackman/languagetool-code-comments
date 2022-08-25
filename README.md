@@ -29,6 +29,8 @@ Never will you submit a PR where you fat-fingered `// This is a hck` in your cod
 
 Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#available-parsers), LTCC easily integrates with several programming languages. And if privacy is a concern, and you have some spare hardware lying around, LanguageTool offers a [great way](https://dev.languagetool.org/http-server) to self-host your own instance.
 
+![screenshot](.github/screenshot.jpg)
+
 <!-- command-help start -->
 
 ```
