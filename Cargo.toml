@@ -83,6 +83,7 @@ release = '''set -e
   dprint fmt
   git add .
   git commit --amend -m "v$LTCC_VERSION"
+  git tag -d "v$LTCC_VERSION"
   git tag -a "v$LTCC_VERSION" -m "v$LTCC_VERSION"
 
   cargo bin cross build --release --target x86_64-apple-darwin
