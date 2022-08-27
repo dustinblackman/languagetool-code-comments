@@ -86,6 +86,8 @@ brew install dustinblackman/tab/languagetool-code-comments
 ```sh
 curl -s https://dustinblackman.github.io/apt/deb/KEY.gpg | apt-key add -
 curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
+sudo apt-get update
+sudo apt-get install languagetool-code-comments
 ```
 
 ### Nix
