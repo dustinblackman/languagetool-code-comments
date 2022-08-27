@@ -10,6 +10,7 @@
 - [Install](#Install)
   - [MacOS](#macos)
   - [Debian / Ubuntu](#debian--ubuntu)
+  - [Fedora / CentOS](#fedora--centos)
   - [Nix](#nix)
   - [Arch Linux](#arch-linux)
   - [Windows](#windows)
