@@ -23,6 +23,9 @@ archives:
   - format_overrides:
     - goos: windows
       format: zip
+    files:
+      - completions/*
+
 signs:
   - artifacts: checksum
     args: ["-u", "6A34CFEE77FE8257C3BB92FE24C3FC5D6987904B", "--output", "${signature}", "--detach-sign", "${artifact}"]
@@ -66,6 +69,19 @@ nfpms:
     formats:
       - deb
       - rpm
+    contents:
+      - src: ./completions/languagetool-code-comments.bash
+        dst: /usr/share/bash-completion/completions/languagetool-code-comments
+        file_info:
+          mode: 0644
+      - src: ./completions/languagetool-code-comments.fish
+        dst: /usr/share/fish/completions/languagetool-code-comments.fish
+        file_info:
+          mode: 0644
+      - src: ./completions/languagetool-code-comments.zsh
+        dst:  /usr/share/zsh/vendor-completions/_languagetool-code-comments
+        file_info:
+          mode: 0644
 
 aurs:
   - name: languagetool-code-comments-bin
@@ -78,6 +94,16 @@ aurs:
     license: "MIT"
     private_key: "{{ .Env.AUR_KEY }}"
     git_url: "ssh://aur@aur.archlinux.org/languagetool-code-comments-bin.git"
+    package: |-
+        # bin
+        install -Dm755 "./languagetool-code-comments" "${pkgdir}/usr/bin/languagetool-code-comments"
+        # completions
+        mkdir -p "${pkgdir}/usr/share/bash-completion/completions/"
+        mkdir -p "${pkgdir}/usr/share/zsh/site-functions/"
+        mkdir -p "${pkgdir}/usr/share/fish/vendor_completions.d/"
+        install -Dm644 "./completions/languagetool-code-comments.bash" "${pkgdir}/usr/share/bash-completion/completions/languagetool-code-comments"
+        install -Dm644 "./completions/languagetool-code-comments.zsh" "${pkgdir}/usr/share/zsh/site-functions/_languagetool-code-comments"
+        install -Dm644 "./completions/languagetool-code-comments.fish" "${pkgdir}/usr/share/fish/vendor_completions.d/languagetool-code-comments.fish"
 
 changelog:
   use: github-native

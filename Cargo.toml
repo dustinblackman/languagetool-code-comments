@@ -45,6 +45,13 @@ build-windows-x64 = '''set -e
   cd ../../../
   cargo bin cross build --release --target x86_64-pc-windows-msvc
 '''
+build-completions = '''set -e
+  rm -rf completions
+  mkdir completions
+  ./target/debug/languagetool-code-comments completion --shell zsh > completions/languagetool-code-comments.zsh
+  ./target/debug/languagetool-code-comments completion --shell bash > completions/languagetool-code-comments.bash
+  ./target/debug/languagetool-code-comments completion --shell fish > completions/languagetool-code-comments.fish
+'''
 lint = '''set -e
   cargo fmt --check
   cargo clippy
@@ -66,6 +73,7 @@ goreleaser = '''set -e
   rm -f .bin/goreleaser
   curl -L https://github.com/goreleaser/goreleaser/releases/download/v1.10.3/goreleaser_Darwin_x86_64.tar.gz | tar xz - -C .bin goreleaser
 
+  cargo cmd build-completions
   AUR_KEY=$(cat ~/.ssh/aur) .bin/goreleaser --rm-dist
   tools/apt.sh "$LTCC_VERSION" "$(realpath dist)"
   tools/nur.sh "$LTCC_VERSION" "$(realpath dist)"
