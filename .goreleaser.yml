@@ -25,6 +25,7 @@ archives:
       format: zip
     files:
       - completions/*
+      - LICENSE
 
 signs:
   - artifacts: checksum
@@ -97,6 +98,10 @@ aurs:
     package: |-
         # bin
         install -Dm755 "./languagetool-code-comments" "${pkgdir}/usr/bin/languagetool-code-comments"
+
+        # license
+        install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/languagetool-code-comments/LICENSE"
+
         # completions
         mkdir -p "${pkgdir}/usr/share/bash-completion/completions/"
         mkdir -p "${pkgdir}/usr/share/zsh/site-functions/"
