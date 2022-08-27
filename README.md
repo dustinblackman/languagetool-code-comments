@@ -35,7 +35,7 @@ Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#avai
 <!-- command-help start -->
 
 ```
-languagetool-code-comments v0.1.3
+languagetool-code-comments v0.2.0
 Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
 comments!
 
@@ -70,6 +70,7 @@ SUPPORTED LANGUAGES:
   - toml
   - tsx
   - typescript
+  - yaml
 ```
 
 <!-- command-help end -->
