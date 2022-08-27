@@ -90,6 +90,13 @@ sudo apt-get update
 sudo apt-get install languagetool-code-comments
 ```
 
+### Fedora / CentOS
+
+```sh
+yum-config-manager --add-repo https://dustinblackman.github.io/yum/config.repo
+yum install languagetool-code-comments
+```
+
 ### Nix
 
 ```sh

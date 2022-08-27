@@ -69,6 +69,7 @@ goreleaser = '''set -e
   AUR_KEY=$(cat ~/.ssh/aur) .bin/goreleaser --rm-dist
   tools/apt.sh "$LTCC_VERSION" "$(realpath dist)"
   tools/nur.sh "$LTCC_VERSION" "$(realpath dist)"
+  tools/yum.sh "$LTCC_VERSION" "$(realpath dist)"
 '''
 release = '''set -e
   cargo check
