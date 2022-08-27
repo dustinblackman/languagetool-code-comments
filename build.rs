@@ -117,6 +117,11 @@ fn main() {
             "tree-sitter-rust/src",
             vec!["parser.c", "scanner.c"],
         ),
+        build_treesitter_grammar(
+            "tree-sitter-yaml",
+            "tree-sitter-yaml/src",
+            vec!["parser.c", "scanner.cc"],
+        ),
     ];
     langs.sort();
     let langs_str = langs.join(",");

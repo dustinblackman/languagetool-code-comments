@@ -46,3 +46,6 @@
 [submodule "external/tree-sitter-sql"]
 	path = external/tree-sitter-sql
 	url = https://github.com/m-novikov/tree-sitter-sql.git
+[submodule "external/tree-sitter-yaml"]
+	path = external/tree-sitter-yaml
+	url = https://github.com/ikatyang/tree-sitter-yaml.git

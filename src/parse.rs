@@ -42,6 +42,7 @@ extern "C" {
     fn tree_sitter_toml() -> Language;
     fn tree_sitter_tsx() -> Language;
     fn tree_sitter_typescript() -> Language;
+    fn tree_sitter_yaml() -> Language;
 }
 
 /// Parses the provided node searching for CommentLeafs, or further nodes to scan.
@@ -95,10 +96,7 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         "html" => {
             parser.set_language(unsafe { tree_sitter_html() })?;
         }
-        "js" => {
-            parser.set_language(unsafe { tree_sitter_javascript() })?;
-        }
-        "jsx" => {
+        "js" | "jsx" => {
             parser.set_language(unsafe { tree_sitter_javascript() })?;
         }
         "lua" => {
@@ -124,6 +122,9 @@ fn get_parser(filepath: &str) -> Result<Parser> {
         }
         "tf" => {
             parser.set_language(unsafe { tree_sitter_hcl() })?;
+        }
+        "yaml" | "yml" => {
+            parser.set_language(unsafe { tree_sitter_yaml() })?;
         }
         "Dockerfile" => {
             parser.set_language(unsafe { tree_sitter_dockerfile() })?;
