@@ -35,7 +35,7 @@ Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#avai
 <!-- command-help start -->
 
 ```
-languagetool-code-comments v0.2.0
+languagetool-code-comments v0.3.0
 Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
 comments!
 
@@ -54,6 +54,7 @@ SUBCOMMANDS:
     help          Print this message or the help of the given subcommand(s)
 
 SUPPORTED LANGUAGES:
+  - astro
   - bash
   - css
   - dockerfile
