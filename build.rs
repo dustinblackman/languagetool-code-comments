@@ -50,6 +50,11 @@ fn main() {
 
     let mut langs = vec![
         build_treesitter_grammar(
+            "tree-sitter-astro",
+            "tree-sitter-astro/src",
+            vec!["parser.c", "scanner.cc"],
+        ),
+        build_treesitter_grammar(
             "tree-sitter-bash",
             "tree-sitter-bash/src",
             vec!["parser.c", "scanner.cc"],

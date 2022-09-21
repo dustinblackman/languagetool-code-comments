@@ -8,7 +8,7 @@ use fstrings::*;
 use std::cell::RefCell;
 use std::ffi::OsStr;
 use std::path::Path;
-use tree_sitter::{Language, Node, Parser, Tree};
+use tree_sitter::{Language as TSLanguage, Node, Parser};
 use xxhash_rust::xxh3::xxh3_64;
 
 #[derive(Clone, Debug)]
@@ -21,61 +21,208 @@ pub struct CodeComment {
 unsafe impl Send for CodeComment {}
 unsafe impl Sync for CodeComment {}
 
-struct CommentLeaf<'a> {
-    pub reference: Node<'a>,
-    pub text: &'a str,
+#[derive(Clone, Debug)]
+struct CommentLeaf {
+    pub text: String,
+    pub row: usize,
+    pub column: usize,
+}
+
+struct LanguageConfig {
+    /// Tree Sitter language parser instance.
+    language: TSLanguage,
+    /// Some languages have other embedded (Vue, Astro, Markdown). The list is used to parse child
+    /// syntaxes when conditions are met.
+    in_source_languages: Vec<Languages>,
+    in_source_node_kind: &'static str,
+    in_source_node_kind_prefix: &'static str,
 }
 
 extern "C" {
-    fn tree_sitter_bash() -> Language;
-    fn tree_sitter_css() -> Language;
-    fn tree_sitter_dockerfile() -> Language;
-    fn tree_sitter_go() -> Language;
-    fn tree_sitter_hcl() -> Language;
-    fn tree_sitter_html() -> Language;
-    fn tree_sitter_javascript() -> Language;
-    fn tree_sitter_lua() -> Language;
-    fn tree_sitter_make() -> Language;
-    fn tree_sitter_python() -> Language;
-    fn tree_sitter_rust() -> Language;
-    fn tree_sitter_sql() -> Language;
-    fn tree_sitter_toml() -> Language;
-    fn tree_sitter_tsx() -> Language;
-    fn tree_sitter_typescript() -> Language;
-    fn tree_sitter_yaml() -> Language;
+    fn tree_sitter_astro() -> TSLanguage;
+    fn tree_sitter_bash() -> TSLanguage;
+    fn tree_sitter_css() -> TSLanguage;
+    fn tree_sitter_dockerfile() -> TSLanguage;
+    fn tree_sitter_go() -> TSLanguage;
+    fn tree_sitter_hcl() -> TSLanguage;
+    fn tree_sitter_html() -> TSLanguage;
+    fn tree_sitter_javascript() -> TSLanguage;
+    fn tree_sitter_lua() -> TSLanguage;
+    fn tree_sitter_make() -> TSLanguage;
+    fn tree_sitter_python() -> TSLanguage;
+    fn tree_sitter_rust() -> TSLanguage;
+    fn tree_sitter_sql() -> TSLanguage;
+    fn tree_sitter_toml() -> TSLanguage;
+    fn tree_sitter_tsx() -> TSLanguage;
+    fn tree_sitter_typescript() -> TSLanguage;
+    fn tree_sitter_yaml() -> TSLanguage;
 }
 
-/// Parses the provided node searching for CommentLeafs, or further nodes to scan.
-fn parse_tree<'a>(vector: &RefCell<Vec<CommentLeaf<'a>>>, node: Node<'a>, text: &'a str) {
-    if node.child_count() == 0 {
-        if !node.byte_range().is_empty() && vec!["comment", "line_comment"].contains(&node.kind()) {
-            let node_text: &'a str = &text[node.byte_range()];
-            vector.borrow_mut().push(CommentLeaf {
-                reference: node,
-                text: node_text,
-            });
+#[derive(Clone, Debug)]
+enum Languages {
+    Astro,
+    Bash,
+    Css,
+    Docker,
+    Go,
+    Hcl,
+    Html,
+    Javascript,
+    Lua,
+    Make,
+    Python,
+    Rust,
+    Sql,
+    Toml,
+    Tsx,
+    Typescript,
+    Yaml,
+}
+
+/// Returns a language configuration.
+fn get_language_config(lang: Languages) -> LanguageConfig {
+    match lang {
+        Languages::Astro => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_astro() },
+                in_source_languages: vec![Languages::Typescript],
+                in_source_node_kind: "raw_text",
+                in_source_node_kind_prefix: "---",
+            }
         }
-        return;
-    }
-
-    let mut cursor = node.walk();
-    for child in node.children(&mut cursor) {
-        parse_tree(vector, child, text);
+        Languages::Bash => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_bash() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Css => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_css() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Docker => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_dockerfile() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Go => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_go() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Hcl => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_hcl() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Html => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_html() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Javascript => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_javascript() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Lua => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_lua() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Make => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_make() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Python => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_python() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Rust => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_rust() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Sql => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_sql() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Toml => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_toml() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Tsx => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_tsx() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Typescript => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_typescript() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Yaml => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_yaml() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
     }
 }
 
-/// Kicks off parsing a Tree, appending leaves to a vector as they're found.
-fn get_comment_nodes<'a>(tree: &'a Tree, source_code: &'a str) -> Result<Vec<CommentLeaf<'a>>> {
-    let leaves = RefCell::new(Vec::new());
-    parse_tree(&leaves, tree.root_node(), source_code);
-
-    return Ok(leaves.into_inner());
-}
-
-/// Uses a file path, and its extension to detect language, and returns an initialized Tree Sitter.
-/// parser for source code parsing.
-fn get_parser(filepath: &str) -> Result<Parser> {
-    let mut parser = Parser::new();
+/// Uses a file path and its extension to detect language.
+fn get_language_from_filepath(filepath: &str) -> Result<Languages> {
     let pb = Path::new(filepath);
     let mut ext = pb.extension().and_then(OsStr::to_str).unwrap_or_default();
 
@@ -84,70 +231,161 @@ fn get_parser(filepath: &str) -> Result<Parser> {
     }
 
     match ext {
+        "astro" => {
+            return Ok(Languages::Astro);
+        }
         "sh" => {
-            parser.set_language(unsafe { tree_sitter_bash() })?;
+            return Ok(Languages::Bash);
         }
         "css" => {
-            parser.set_language(unsafe { tree_sitter_css() })?;
+            return Ok(Languages::Css);
         }
         "go" => {
-            parser.set_language(unsafe { tree_sitter_go() })?;
+            return Ok(Languages::Go);
         }
         "html" => {
-            parser.set_language(unsafe { tree_sitter_html() })?;
+            return Ok(Languages::Html);
         }
         "js" | "jsx" => {
-            parser.set_language(unsafe { tree_sitter_javascript() })?;
+            return Ok(Languages::Javascript);
         }
         "lua" => {
-            parser.set_language(unsafe { tree_sitter_lua() })?;
+            return Ok(Languages::Lua);
         }
         "toml" => {
-            parser.set_language(unsafe { tree_sitter_toml() })?;
+            return Ok(Languages::Toml);
         }
         "ts" => {
-            parser.set_language(unsafe { tree_sitter_typescript() })?;
+            return Ok(Languages::Typescript);
         }
         "tsx" => {
-            parser.set_language(unsafe { tree_sitter_tsx() })?;
+            return Ok(Languages::Tsx);
         }
         "py" => {
-            parser.set_language(unsafe { tree_sitter_python() })?;
+            return Ok(Languages::Python);
         }
         "rs" => {
-            parser.set_language(unsafe { tree_sitter_rust() })?;
+            return Ok(Languages::Rust);
         }
         "sql" => {
-            parser.set_language(unsafe { tree_sitter_sql() })?;
+            return Ok(Languages::Sql);
         }
         "tf" => {
-            parser.set_language(unsafe { tree_sitter_hcl() })?;
+            return Ok(Languages::Hcl);
         }
         "yaml" | "yml" => {
-            parser.set_language(unsafe { tree_sitter_yaml() })?;
+            return Ok(Languages::Yaml);
         }
         "Dockerfile" => {
-            parser.set_language(unsafe { tree_sitter_dockerfile() })?;
+            return Ok(Languages::Docker);
         }
         "Makefile" => {
-            parser.set_language(unsafe { tree_sitter_make() })?;
+            return Ok(Languages::Make);
         }
         _ => {
             return Err(anyhow!(f!("Can not detect language for file {filepath}")));
         }
     }
+}
 
-    return Ok(parser);
+/// Parses the provided node searching for CommentLeafs, or further nodes to scan.
+fn parse_tree<'a>(
+    language_config: &LanguageConfig,
+    vector: &RefCell<Vec<CommentLeaf>>,
+    node: Node<'a>,
+    last_kind: &'static str,
+    text: &'a str,
+    start_row_position: usize,
+    start_column_position: usize,
+) -> Result<&'static str> {
+    if node.child_count() == 0 {
+        if node.byte_range().is_empty() {
+            return Ok(node.kind());
+        }
+
+        if vec!["comment", "line_comment"].contains(&node.kind()) {
+            let node_text = &text[node.byte_range()];
+            let start_position = node.start_position();
+            let comment_node = CommentLeaf {
+                text: node_text.to_string(),
+                row: start_position.row + start_row_position,
+                column: start_position.column + start_column_position,
+            };
+            vector.borrow_mut().push(comment_node);
+        }
+
+        if !language_config.in_source_languages.is_empty()
+            && node.kind() == language_config.in_source_node_kind
+            && last_kind == language_config.in_source_node_kind_prefix
+        {
+            let node_text: &'a str = &text[node.byte_range()];
+            let start_position = node.start_position();
+            for lang in language_config.in_source_languages.iter() {
+                let comment_nodes = get_comment_nodes_from_source(
+                    lang.clone(),
+                    node_text,
+                    start_position.row,
+                    start_position.column,
+                )?;
+                for e in comment_nodes.iter() {
+                    vector.borrow_mut().push(e.to_owned());
+                }
+            }
+        }
+
+        return Ok(node.kind());
+    }
+
+    let mut cursor = node.walk();
+    let mut last_kind: &'static str = "";
+    for child in node.children(&mut cursor) {
+        last_kind = parse_tree(
+            language_config,
+            vector,
+            child,
+            last_kind,
+            text,
+            start_row_position,
+            start_column_position,
+        )?;
+    }
+
+    return Ok("");
+}
+
+/// Kicks off parsing a Tree, appending leaves to a vector as they're found.
+fn get_comment_nodes_from_source(
+    lang: Languages,
+    source_code: &str,
+    start_row_position: usize,
+    start_column_position: usize,
+) -> Result<Vec<CommentLeaf>> {
+    let lang_config = get_language_config(lang);
+    let mut parser = Parser::new();
+    parser.set_language(lang_config.language)?;
+
+    let tree = parser.parse(source_code, None).unwrap();
+    let leaves = RefCell::new(Vec::new());
+    parse_tree(
+        &lang_config,
+        &leaves,
+        tree.root_node(),
+        "",
+        source_code,
+        start_row_position,
+        start_column_position,
+    )?;
+
+    return Ok(leaves.into_inner());
 }
 
 /// Converts source code to an array of CodeComment to later be processed by LanguageTool. This
 /// includes tree parsing, and hashing code comments text for deduping and caching.
 pub async fn parse_code_comments(filepath: &str) -> Result<Vec<CodeComment>> {
-    let mut parser = get_parser(filepath)?;
+    let lang = get_language_from_filepath(filepath)?;
     let source_code = fs::read_to_string(filepath).await?;
-    let tree = parser.parse(source_code.clone(), None).unwrap();
 
-    let code_comments = get_comment_nodes(&tree, &source_code)?
+    let code_comments = get_comment_nodes_from_source(lang, &source_code, 0, 0)?
         .iter()
         .filter(|comment_node| {
             if filepath.ends_with(".sh") && comment_node.text.starts_with("#!") {
@@ -157,15 +395,14 @@ pub async fn parse_code_comments(filepath: &str) -> Result<Vec<CodeComment>> {
             return true;
         })
         .map(|comment_node| {
-            let start_position = comment_node.reference.start_position();
             let text = comment_node.text.to_string();
             let text_checksum = xxh3_64(text.as_bytes());
 
             return CodeComment {
                 text,
                 text_checksum,
-                start_row: start_position.row,
-                start_column: start_position.column,
+                start_row: comment_node.row,
+                start_column: comment_node.column,
             };
         })
         .collect::<Vec<CodeComment>>();

@@ -3,6 +3,15 @@ use anyhow::Result;
 use expectest::prelude::*;
 
 #[tokio::test]
+async fn test_astro() -> Result<()> {
+    let res = parse_code_comments("./tests/fixtures/astro.astro").await?;
+    expect!(res.len()).to(be_equal_to(2));
+    expect!(res[0].text.to_owned()).to(be_equal_to("// I am comment number one."));
+
+    return Ok(());
+}
+
+#[tokio::test]
 async fn test_bash() -> Result<()> {
     let res = parse_code_comments("./tests/fixtures/bash.sh").await?;
     expect!(res.len()).to(be_equal_to(2));

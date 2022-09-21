@@ -5,7 +5,7 @@ edition = "2021"
 rust-version = "1.63.0"
 
 [dependencies]
-anyhow = "=1.0.62"
+anyhow = "=1.0.63"
 async-std = { version = "=1.12.0", features = ["tokio1"] }
 clap = "=3.2.17"
 clap_complete = "=3.2.3"
@@ -41,7 +41,10 @@ vergen = { version = "=7.4.0", features = ["git"] }
 [package.metadata.commands]
 build-windows-x64 = '''set -e
   cd external/cross/docker
+  git checkout tags/v0.2.4 -- wine.sh
+  sd 'i386' 'i386\nmkdir -p /etc/apt/keyrings/ && wget -nc -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key\n' ./wine.sh
   docker build -f cross-toolchains/docker/Dockerfile.x86_64-pc-windows-msvc-cross -t cross-msvc:local .
+  git checkout tags/v0.2.4 -- wine.sh
   cd ../../../
   cargo bin cross build --release --target x86_64-pc-windows-msvc
 '''
