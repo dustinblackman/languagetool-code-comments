@@ -81,7 +81,7 @@ SUPPORTED LANGUAGES:
 ### MacOS
 
 ```sh
-brew install dustinblackman/tab/languagetool-code-comments
+brew install dustinblackman/tap/languagetool-code-comments
 ```
 
 ### Debian / Ubuntu
