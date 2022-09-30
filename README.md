@@ -33,6 +33,7 @@ Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#avai
 ![screenshot](.github/screenshot.jpg)
 
 <!-- command-help start -->
+
 ```
 languagetool-code-comments v0.3.0
 Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
@@ -72,6 +73,7 @@ SUPPORTED LANGUAGES:
   - typescript
   - yaml
 ```
+
 <!-- command-help end -->
 
 ## Install
@@ -112,15 +114,17 @@ yay -S languagetool-code-comments-bin
 
 ### Windows
 
-__Chocolatey__
+**Chocolatey**
 
 <!-- choco-install start -->
+
 ```sh
 choco install languagetool-code-comments --version=0.3.0
 ```
+
 <!-- choco-install end -->
 
-__Scoop__
+**Scoop**
 
 ```sh
 scoop bucket add dustinblackman https://github.com/dustinblackman/scoop-bucket.git
