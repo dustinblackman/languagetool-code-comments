@@ -48,6 +48,7 @@ extern "C" {
     fn tree_sitter_html() -> TSLanguage;
     fn tree_sitter_javascript() -> TSLanguage;
     fn tree_sitter_lua() -> TSLanguage;
+    fn tree_sitter_nix() -> TSLanguage;
     fn tree_sitter_make() -> TSLanguage;
     fn tree_sitter_python() -> TSLanguage;
     fn tree_sitter_rust() -> TSLanguage;
@@ -69,6 +70,7 @@ enum Languages {
     Html,
     Javascript,
     Lua,
+    Nix,
     Make,
     Python,
     Rust,
@@ -149,6 +151,14 @@ fn get_language_config(lang: Languages) -> LanguageConfig {
         Languages::Lua => {
             return LanguageConfig {
                 language: unsafe { tree_sitter_lua() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Nix => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_nix() },
                 in_source_languages: vec![],
                 in_source_node_kind: "",
                 in_source_node_kind_prefix: "",
@@ -251,6 +261,9 @@ fn get_language_from_filepath(filepath: &str) -> Result<Languages> {
         }
         "lua" => {
             return Ok(Languages::Lua);
+        }
+        "nix" => {
+            return Ok(Languages::Nix);
         }
         "toml" => {
             return Ok(Languages::Toml);

@@ -91,6 +91,11 @@ fn main() {
             "tree-sitter-lua/src",
             vec!["parser.c", "scanner.c"],
         ),
+        build_treesitter_grammar(
+            "tree-sitter-nix",
+            "tree-sitter-nix/src",
+            vec!["parser.c", "scanner.c"],
+        ),
         build_treesitter_grammar("tree-sitter-make", "tree-sitter-make/src", vec!["parser.c"]),
         build_treesitter_grammar(
             "tree-sitter-sql",
