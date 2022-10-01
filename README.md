@@ -179,7 +179,7 @@ cargo check
 
 Let's take the following steps to add Perl to `languagetool-code-comments`, as example which will take you from selecting the Tree
 Sitter config, to integrating the language in the repo, writing tests, and QAing. If you'd like to check out a complete example,
-see [add HCL](https://github.com/dustinblackman/languagetool-code-comments/commit/4bbba4ceba9553a64a8c921afc61fc014987354a).
+see [add Nix](https://github.com/dustinblackman/languagetool-code-comments/commit/bdcb51aca1423053c7888e97a1b5866d7316c854).
 
 1. Follow the [setup](#setup) for the project.
 2. Head over to the [Tree Sitter Parsers](https://tree-sitter.github.io/tree-sitter/#available-parsers) docs and select the Perl parser.
@@ -195,9 +195,8 @@ build_treesitter_grammar(
 ```
 
 5. Run `cargo build` to verify the configuration is set up correctly.
-6. Update [`parse.rs`](./src/parse.rs) by adding `fn tree_sitter_perl() - Language;` to `extern "C"`.
-7. Update the `get_parser()` function in [parse.rs](./src/parse.rs) to match the Perl file extension.
-8. Create a Perl file fixture in `./tests/fixtures`, following the examples of the other languages.
-9. Update [`parse_test.rs`](./src/parse_test.rs) with a test for Perl, following the examples of the other languages.
-10. Run `cargo test` to prove your tests work.
-11. Run `cargo build` and test the CLI works as expected with Perl.
+6. Update [`parse.rs`](./src/parse.rs) by adding `fn tree_sitter_perl() - Language;` to `extern "C"`, `Perl` to the `Languages` enum, a case statement in `get_language_config()`, and an extension parser in `get_language_from_filepath()`.
+7. Create a Perl file fixture in `./tests/fixtures`, following the examples of the other languages.
+8. Update [`parse_test.rs`](./src/parse_test.rs) with a test for Perl, following the examples of the other languages.
+9. Run `cargo test` to prove your tests work.
+10. Run `cargo build` and test the CLI works as expected with Perl.
