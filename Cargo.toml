@@ -39,15 +39,6 @@ cc = { version = "=1.0.73", features = ["parallel"] }
 vergen = { version = "=7.4.0", features = ["git"] }
 
 [package.metadata.commands]
-build-windows-x64 = '''set -e
-  cd external/cross/docker
-  git checkout tags/v0.2.4 -- wine.sh
-  sd 'i386' 'i386\nmkdir -p /etc/apt/keyrings/ && wget -nc -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key\n' ./wine.sh
-  docker build -f cross-toolchains/docker/Dockerfile.x86_64-pc-windows-msvc-cross -t cross-msvc:local .
-  git checkout tags/v0.2.4 -- wine.sh
-  cd ../../../
-  cargo bin cross build --release --target x86_64-pc-windows-msvc
-'''
 build-completions = '''set -e
   rm -rf completions
   mkdir completions
@@ -103,7 +94,7 @@ release = '''set -e
   cargo bin cross build --release --target aarch64-apple-darwin
   cargo bin cross build --release --target x86_64-unknown-linux-gnu
   cargo bin cross build --release --target aarch64-unknown-linux-gnu
-  cargo cmd build-windows-x64
+  cargo bin cross build --release --target x86_64-pc-windows-gnu
 
   git push
   git push --tags
