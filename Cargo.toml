@@ -23,7 +23,7 @@ url = "=2.2.2"
 xxhash-rust = { version = "=0.8.5", features = ["xxh3"] }
 
 # Enable vendored features to simplify cross compilation.
-reqwest = { version = "=0.11.11", default-features = false, features = ["rustls-tls", "json"] }
+reqwest = { version = "=0.11.11", default-features = false, features = ["native-tls-vendored", "json"] }
 
 [dev-dependencies]
 axum = "=0.5.15"
@@ -100,6 +100,7 @@ release = '''set -e
   git tag -a "v$LTCC_VERSION" -m "v$LTCC_VERSION"
 
   cargo bin cross build --release --target x86_64-apple-darwin
+  cargo bin cross build --release --target aarch64-apple-darwin
   cargo bin cross build --release --target x86_64-unknown-linux-gnu
   cargo bin cross build --release --target aarch64-unknown-linux-gnu
   cargo cmd build-windows-x64
