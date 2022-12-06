@@ -18,7 +18,7 @@ jobs:
       - name: Install deps
         run: |
           git submodule update --init --recursive
-          cargo install cargo-cmd cargo-run-bin "dprint@$(cat Cargo.toml | grep dprint | awk -F '"' '{print $2}' | head -n 1)"
+          cargo install cargo-cmd cargo-run-bin
       - name: Setup nightly
         run: cargo cmd setup-nightly
       - name: Lint

@@ -3,3 +3,5 @@ dist/
 /target
 test.ts
 completions
+THIRDPARTY.yml
+THIRDPARTY.md

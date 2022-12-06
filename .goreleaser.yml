@@ -24,6 +24,7 @@ archives:
     files:
       - completions/*
       - LICENSE
+      - THIRDPARTY.md
 
 signs:
   - artifacts: checksum

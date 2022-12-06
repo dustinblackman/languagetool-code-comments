@@ -9,12 +9,12 @@ anyhow = "=1.0.63"
 async-std = { version = "=1.12.0", features = ["tokio1"] }
 clap = "=3.2.17"
 clap_complete = "=3.2.3"
-colored = "=2.0.0"
 dirs = "=4.0.0"
 fstrings = "=0.2.3"
 futures = { version = "=0.3.23", features = ["std"] }
 languagetool-rust = { version = "=1.2.0", default-features = false, features = ["cli"] }
 lazy_static = "=1.4.0"
+owo-colors = "3.5.0"
 serde = { version = "=1.0.143", features = ["derive"] }
 serde_json = "=1.0.83"
 tokio = { version = "=1.20.1", features = ["macros"] }
@@ -27,16 +27,20 @@ reqwest = { version = "=0.11.11", default-features = false, features = ["native-
 
 [dev-dependencies]
 axum = "=0.5.15"
-cargo-llvm-cov = "=0.4.14"
-cargo-nextest = "=0.9.35"
-cross = "=0.2.4"
-# dprint = "0.30.3"
 expectest = "=0.12.0"
-rust-script = "=0.21.0"
 
 [build-dependencies]
 cc = { version = "=1.0.73", features = ["parallel"] }
 vergen = { version = "=7.4.0", features = ["git"] }
+
+[package.metadata.bin]
+cargo-llvm-cov = "0.4.14"
+cargo-deny = "0.13.5"
+cargo-bundle-licenses = "1.0.1"
+cargo-nextest = "0.9.35"
+cross = "0.2.4"
+dprint = "0.30.3"
+rust-script = "0.21.0"
 
 [package.metadata.commands]
 build-completions = '''set -e
@@ -50,7 +54,8 @@ lint = '''set -e
   cargo fmt --check
   cargo clippy
   cargo check
-  dprint check
+  cargo bin dprint check
+  cargo bin cargo-deny check licenses
 '''
 lint-fix = '''set -e
   cargo clippy --fix --allow-dirty --allow-staged
@@ -58,7 +63,7 @@ lint-fix = '''set -e
   # Run twice as for some reason not all formatting is applied on the first try.
   cargo fmt
   cargo fmt
-  dprint fmt
+  cargo bin dprint fmt
 '''
 goreleaser = '''set -e
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
@@ -76,6 +81,10 @@ goreleaser = '''set -e
 '''
 release = '''set -e
   cargo check
+  cargo bin cargo-deny check licenses
+  cargo bin cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+  rm -f THIRDPARTY.md
+  cat THIRDPARTY.yml | yq -p=yaml -o=json | jq -rc '.third_party_libraries[]' | grep -v 'NOT FOUND' | jq -rcs '.[] | "## \(.package_name) - \(.licenses[0].license)\n\n\(.licenses[0].text)\n---\n"' > THIRDPARTY.md
 
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
   git add .
@@ -84,7 +93,7 @@ release = '''set -e
 
   cargo build
   cargo bin rust-script ./tools/update-readme.rs
-  dprint fmt
+  cargo bin dprint fmt
   git add .
   git commit --amend -m "v$LTCC_VERSION"
   git tag -d "v$LTCC_VERSION"

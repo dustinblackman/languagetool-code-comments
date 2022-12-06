@@ -7,18 +7,19 @@ mod lt;
 mod parse;
 
 use anyhow::Result;
-use colored::*;
 use fstrings::*;
+use owo_colors::OwoColorize;
 use lazy_static::lazy_static;
 use std::io;
 
 lazy_static! {
     static ref SUPPORTED_LANGS_HELP: String = {
-        let supported_langs = env!("LTCC_LANGS")
+        let mut supported_langs = env!("LTCC_LANGS")
             .split(',')
             .collect::<Vec<&str>>()
-            .join("\n  - ")
-            .green();
+            .join("\n  - ");
+
+        supported_langs = supported_langs.green().to_string();
 
         let header = "SUPPORTED LANGUAGES:".yellow();
         return f!("{header}\n  - {supported_langs}");
