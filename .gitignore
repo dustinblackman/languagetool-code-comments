@@ -4,4 +4,5 @@ dist/
 test.ts
 completions
 THIRDPARTY.yml
+THIRDPARTY.json
 THIRDPARTY.md
