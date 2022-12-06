@@ -9,7 +9,7 @@ allow = [
   "Apache-2.0",
   "BSL-1.0",
   "0BSD",
-  "BSD-3-Clause"
+  "BSD-3-Clause",
 ]
 exceptions = [
   { allow = ["Unicode-DFS-2016"], name = "unicode-ident" },

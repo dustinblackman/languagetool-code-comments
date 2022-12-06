@@ -35,7 +35,7 @@ Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#avai
 <!-- command-help start -->
 
 ```
-languagetool-code-comments v0.4.2
+languagetool-code-comments v0.4.3
 Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
 comments!
 
@@ -53,8 +53,8 @@ SUBCOMMANDS:
     completion    Generates shell completions
     help          Print this message or the help of the given subcommand(s)
 
-SUPPORTED LANGUAGES:
-  - astro
+[33mSUPPORTED LANGUAGES:[39m
+  - [32mastro
   - bash
   - css
   - dockerfile
@@ -72,7 +72,7 @@ SUPPORTED LANGUAGES:
   - toml
   - tsx
   - typescript
-  - yaml
+  - yaml[39m
 ```
 
 <!-- command-help end -->
@@ -120,7 +120,7 @@ yay -S languagetool-code-comments-bin
 <!-- choco-install start -->
 
 ```sh
-choco install languagetool-code-comments --version=0.4.2
+choco install languagetool-code-comments --version=0.4.3
 ```
 
 <!-- choco-install end -->
