@@ -8,8 +8,8 @@ mod parse;
 
 use anyhow::Result;
 use fstrings::*;
-use owo_colors::OwoColorize;
 use lazy_static::lazy_static;
+use owo_colors::OwoColorize;
 use std::io;
 
 lazy_static! {
