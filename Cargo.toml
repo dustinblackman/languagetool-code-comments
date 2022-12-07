@@ -52,6 +52,7 @@ build-completions = '''set -e
 '''
 lint = '''set -e
   cargo cmd setup-nightly
+r
   cargo +ltcc-nightly fmt --check
   cargo clippy
   cargo check
@@ -115,7 +116,7 @@ release = '''set -e
 get-nightly-name = 'echo ltcc-nightly'
 setup-nightly = '''
   export LTCC_NIGHTLY=nightly-2022-08-11
-  rustup toolchain install "$LTCC_NIGHTLY" --component llvm-tools-preview --force
+  rustup toolchain install "$LTCC_NIGHTLY" --component llvm-tools-preview rustfmt --force
   rustup toolchain link $(cargo cmd get-nightly-name | tail -n1) "$(rustup toolchain list -v | grep $LTCC_NIGHTLY | grep '^nightly-' | awk '{print $2}')"
 '''
 test = '''
