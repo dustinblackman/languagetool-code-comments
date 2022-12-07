@@ -51,18 +51,20 @@ build-completions = '''set -e
   ./target/debug/languagetool-code-comments completion --shell fish > completions/languagetool-code-comments.fish
 '''
 lint = '''set -e
-  cargo fmt --check
+  cargo cmd setup-nightly
+  cargo +ltcc-nightly fmt --check
   cargo clippy
   cargo check
   cargo bin dprint check
   cargo bin cargo-deny check licenses
 '''
 lint-fix = '''set -e
+  cargo cmd setup-nightly
   cargo clippy --fix --allow-dirty --allow-staged
   cargo fix --allow-dirty --allow-staged
   # Run twice as for some reason not all formatting is applied on the first try.
-  cargo fmt
-  cargo fmt
+  cargo +ltcc-nightly fmt
+  cargo +ltcc-nightly fmt
   cargo bin dprint fmt
 '''
 goreleaser = '''set -e
@@ -110,10 +112,11 @@ release = '''set -e
   cargo cmd goreleaser
 '''
 
+get-nightly-name = 'echo ltcc-nightly'
 setup-nightly = '''
   export LTCC_NIGHTLY=nightly-2022-08-11
   rustup toolchain install "$LTCC_NIGHTLY" --component llvm-tools-preview --force
-  rustup toolchain link ltcc-nightly "$(rustup toolchain list -v | grep $LTCC_NIGHTLY | grep '^nightly-' | awk '{print $2}')"
+  rustup toolchain link $(cargo cmd get-nightly-name | tail -n1) "$(rustup toolchain list -v | grep $LTCC_NIGHTLY | grep '^nightly-' | awk '{print $2}')"
 '''
 test = '''
   cargo bin cargo-nextest run

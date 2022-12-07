@@ -1,5 +1,6 @@
-use super::*;
-use crate::cache;
+use std::env;
+use std::net::SocketAddr;
+
 use anyhow::Result;
 use async_std::fs;
 use axum::{
@@ -12,8 +13,9 @@ use axum::{
 };
 use expectest::prelude::*;
 use languagetool_rust::check::CheckResponse;
-use std::env;
-use std::net::SocketAddr;
+
+use super::*;
+use crate::cache;
 
 async fn lt_check_match_results() -> impl IntoResponse {
     let data = fs::read_to_string("./tests/fixtures/commands/lt_with_matches.json")

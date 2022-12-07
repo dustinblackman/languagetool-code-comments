@@ -6,11 +6,12 @@ mod commands;
 mod lt;
 mod parse;
 
+use std::io;
+
 use anyhow::Result;
 use fstrings::*;
 use lazy_static::lazy_static;
 use owo_colors::OwoColorize;
-use std::io;
 
 lazy_static! {
     static ref SUPPORTED_LANGS_HELP: String = {
@@ -133,15 +134,17 @@ async fn parse_cli() -> Result<()> {
                 print_completions(generator, &mut app);
             }
         }
-        Some(("cache", args)) => match args.subcommand() {
-            Some(("delete", _)) => {
-                cache::delete_cache().await?;
+        Some(("cache", args)) => {
+            match args.subcommand() {
+                Some(("delete", _)) => {
+                    cache::delete_cache().await?;
+                }
+                Some(("path", _)) => {
+                    println!("{}", cache::get_dir_path().await?.to_str().unwrap());
+                }
+                _ => unreachable!(),
             }
-            Some(("path", _)) => {
-                println!("{}", cache::get_dir_path().await?.to_str().unwrap());
-            }
-            _ => unreachable!(),
-        },
+        }
         _ => unreachable!(),
     }
 

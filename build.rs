@@ -2,7 +2,9 @@
 #![allow(clippy::needless_return)]
 
 use std::path::PathBuf;
-use vergen::{vergen, Config};
+
+use vergen::vergen;
+use vergen::Config;
 
 fn build_treesitter_grammar(
     name: &str,

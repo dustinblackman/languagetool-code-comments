@@ -1,10 +1,12 @@
+use std::collections::HashMap;
+use std::path::PathBuf;
+
 use anyhow::Result;
 use async_std::fs;
 use fstrings::*;
 use languagetool_rust::check::Match;
-use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::path::PathBuf;
+use serde::Deserialize;
+use serde::Serialize;
 use xxhash_rust::xxh3::xxh3_64;
 
 #[derive(Default, Debug, Clone, Deserialize, Serialize)]
@@ -40,8 +42,8 @@ pub async fn get_file_path(filepath: &str) -> Result<PathBuf> {
     return Ok(cache_dir.join(f!("{filepath_hash}.json")));
 }
 
-/// Loads the cached match entries from cache, returning an empty hashmap if a cache entry did not
-/// exist.
+/// Loads the cached match entries from cache, returning an empty hashmap if a
+/// cache entry did not exist.
 pub async fn get_cached_matches(filepath: &str) -> Result<HashMap<u64, Vec<Match>>> {
     let filepath_cache = get_file_path(filepath).await?;
 

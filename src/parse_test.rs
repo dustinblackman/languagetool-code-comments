@@ -1,6 +1,7 @@
-use super::*;
 use anyhow::Result;
 use expectest::prelude::*;
+
+use super::*;
 
 #[tokio::test]
 async fn test_astro() -> Result<()> {

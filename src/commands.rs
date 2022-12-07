@@ -2,10 +2,14 @@
 #[path = "commands_test.rs"]
 mod tests;
 
-use crate::{cache, lt, parse};
+use std::collections::HashMap;
+
 use anyhow::Result;
 use languagetool_rust::check::Match;
-use std::collections::HashMap;
+
+use crate::cache;
+use crate::lt;
+use crate::parse;
 
 pub async fn check(
     filepath: String,
@@ -16,8 +20,9 @@ pub async fn check(
     let cached_match_map = cache::get_cached_matches(&filepath).await?;
     let code_comments = parse::parse_code_comments(&filepath).await?;
 
-    // Creates a hashmap with checksums of all the code comments. This is later used to dedupe
-    // requests to LanguageTool for codebases that have reoccuring comments in the same file.
+    // Creates a hashmap with checksums of all the code comments. This is later used
+    // to dedupe requests to LanguageTool for codebases that have reoccuring
+    // comments in the same file.
     let mut comments_checksum_map: HashMap<u64, String> = HashMap::new();
     for code_comment in code_comments.iter() {
         comments_checksum_map.insert(code_comment.text_checksum, code_comment.text.to_owned());

@@ -2,13 +2,17 @@
 #[path = "parse_test.rs"]
 mod tests;
 
-use anyhow::{anyhow, Result};
-use async_std::fs;
-use fstrings::*;
 use std::cell::RefCell;
 use std::ffi::OsStr;
 use std::path::Path;
-use tree_sitter::{Language as TSLanguage, Node, Parser};
+
+use anyhow::anyhow;
+use anyhow::Result;
+use async_std::fs;
+use fstrings::*;
+use tree_sitter::Language as TSLanguage;
+use tree_sitter::Node;
+use tree_sitter::Parser;
 use xxhash_rust::xxh3::xxh3_64;
 
 #[derive(Clone, Debug)]
@@ -31,8 +35,8 @@ struct CommentLeaf {
 struct LanguageConfig {
     /// Tree Sitter language parser instance.
     language: TSLanguage,
-    /// Some languages have other embedded (Vue, Astro, Markdown). The list is used to parse child
-    /// syntaxes when conditions are met.
+    /// Some languages have other embedded (Vue, Astro, Markdown). The list is
+    /// used to parse child syntaxes when conditions are met.
     in_source_languages: Vec<Languages>,
     in_source_node_kind: &'static str,
     in_source_node_kind_prefix: &'static str,
@@ -301,7 +305,8 @@ fn get_language_from_filepath(filepath: &str) -> Result<Languages> {
     }
 }
 
-/// Parses the provided node searching for CommentLeafs, or further nodes to scan.
+/// Parses the provided node searching for CommentLeafs, or further nodes to
+/// scan.
 fn parse_tree<'a>(
     language_config: &LanguageConfig,
     vector: &RefCell<Vec<CommentLeaf>>,
@@ -392,8 +397,9 @@ fn get_comment_nodes_from_source(
     return Ok(leaves.into_inner());
 }
 
-/// Converts source code to an array of CodeComment to later be processed by LanguageTool. This
-/// includes tree parsing, and hashing code comments text for deduping and caching.
+/// Converts source code to an array of CodeComment to later be processed by
+/// LanguageTool. This includes tree parsing, and hashing code comments text for
+/// deduping and caching.
 pub async fn parse_code_comments(filepath: &str) -> Result<Vec<CodeComment>> {
     let lang = get_language_from_filepath(filepath)?;
     let source_code = fs::read_to_string(filepath).await?;

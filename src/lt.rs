@@ -1,10 +1,12 @@
 #![allow(clippy::implicit_return)]
 use anyhow::Result;
-use async_std::{channel, sync::Arc};
+use async_std::channel;
+use async_std::sync::Arc;
 use futures::future;
-use languagetool_rust::{
-    check::CheckRequest, check::CheckResponseWithContext, check::Match, server::ServerClient,
-};
+use languagetool_rust::check::CheckRequest;
+use languagetool_rust::check::CheckResponseWithContext;
+use languagetool_rust::check::Match;
+use languagetool_rust::server::ServerClient;
 use url::Url;
 
 #[derive(Clone, Debug)]
@@ -43,8 +45,9 @@ impl Client {
         }));
     }
 
-    /// Submits a QueryRequest to the LanguageTool API and returns an array of Match issues, excluding
-    /// issues related to whitespacing (code comments are full of them naturally).
+    /// Submits a QueryRequest to the LanguageTool API and returns an array of
+    /// Match issues, excluding issues related to whitespacing (code
+    /// comments are full of them naturally).
     pub async fn query(&self, request: QueryRequest) -> Result<QueryResult> {
         let mut req = CheckRequest::default()
             .with_language(request.language)
@@ -73,8 +76,9 @@ impl Client {
         return Ok(query_result);
     }
 
-    /// Submits many QueryRequest to the LanguageTool API in parallel, and returns an array of Match issues, excluding
-    /// issues related to whitespacing (code comments are full of them naturally).
+    /// Submits many QueryRequest to the LanguageTool API in parallel, and
+    /// returns an array of Match issues, excluding issues related to
+    /// whitespacing (code comments are full of them naturally).
     pub async fn query_many(
         self: Arc<Self>,
         requests: Vec<QueryRequest>,
@@ -110,8 +114,8 @@ impl Client {
         future::join_all(threads).await;
         matches_send_master.close();
 
-        // Formats and process' results, extracting results for the deduping hashmap, and mapping them
-        // back to code comment blocks.
+        // Formats and process' results, extracting results for the deduping hashmap,
+        // and mapping them back to code comment blocks.
         let mut query_results: Vec<QueryResult> = vec![];
         while let Ok(m) = matches_receive_master.recv().await {
             query_results.push(m);
