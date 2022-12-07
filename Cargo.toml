@@ -52,7 +52,6 @@ build-completions = '''set -e
 '''
 lint = '''set -e
   cargo cmd setup-nightly
-r
   cargo +ltcc-nightly fmt --check
   cargo clippy
   cargo check
