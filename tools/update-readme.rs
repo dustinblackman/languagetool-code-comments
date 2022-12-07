@@ -12,6 +12,7 @@ fn main() {
     let output_help = String::from_utf8(
         Command::new("./target/debug/languagetool-code-comments")
             .arg("--help")
+            .env("NO_COLOR", "1")
             .output()
             .unwrap()
             .stdout,

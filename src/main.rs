@@ -19,9 +19,13 @@ lazy_static! {
             .collect::<Vec<&str>>()
             .join("\n  - ");
 
-        supported_langs = supported_langs.green().to_string();
+        let mut header = "SUPPORTED LANGUAGES:".to_string();
 
-        let header = "SUPPORTED LANGUAGES:".yellow();
+        if std::env::var("NO_COLOR").is_err() {
+            header = "SUPPORTED LANGUAGES:".yellow().to_string();
+            supported_langs = supported_langs.green().to_string();
+        }
+
         return f!("{header}\n  - {supported_langs}");
     };
 }

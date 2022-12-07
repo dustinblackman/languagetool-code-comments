@@ -53,8 +53,8 @@ SUBCOMMANDS:
     completion    Generates shell completions
     help          Print this message or the help of the given subcommand(s)
 
-[33mSUPPORTED LANGUAGES:[39m
-  - [32mastro
+SUPPORTED LANGUAGES:
+  - astro
   - bash
   - css
   - dockerfile
@@ -72,7 +72,7 @@ SUBCOMMANDS:
   - toml
   - tsx
   - typescript
-  - yaml[39m
+  - yaml
 ```
 
 <!-- command-help end -->
