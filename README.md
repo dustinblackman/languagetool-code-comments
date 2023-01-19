@@ -88,8 +88,8 @@ brew install dustinblackman/tap/languagetool-code-comments
 ### Debian / Ubuntu
 
 ```sh
-curl -s https://dustinblackman.github.io/apt/deb/KEY.gpg | apt-key add -
-curl -s https://dustinblackman.github.io/apt/deb/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
+curl -s https://apt.dustinblackman.com/KEY.gpg | apt-key add -
+curl -s https://apt.dustinblackman.com/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
 sudo apt-get update
 sudo apt-get install languagetool-code-comments
 ```
@@ -97,8 +97,8 @@ sudo apt-get install languagetool-code-comments
 ### Fedora / CentOS
 
 ```sh
-yum-config-manager --add-repo https://dustinblackman.github.io/yum/config.repo
-yum install languagetool-code-comments
+dnf config-manager --add-repo https://yum.dustinblackman.com/config.repo
+dnf install languagetool-code-comments
 ```
 
 ### Nix
