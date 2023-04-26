@@ -45,6 +45,7 @@ struct LanguageConfig {
 extern "C" {
     fn tree_sitter_astro() -> TSLanguage;
     fn tree_sitter_bash() -> TSLanguage;
+    fn tree_sitter_cpp() -> TSLanguage;
     fn tree_sitter_css() -> TSLanguage;
     fn tree_sitter_dockerfile() -> TSLanguage;
     fn tree_sitter_go() -> TSLanguage;
@@ -67,6 +68,7 @@ extern "C" {
 enum Languages {
     Astro,
     Bash,
+    Cpp,
     Css,
     Docker,
     Go,
@@ -99,6 +101,14 @@ fn get_language_config(lang: Languages) -> LanguageConfig {
         Languages::Bash => {
             return LanguageConfig {
                 language: unsafe { tree_sitter_bash() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
+        Languages::Cpp => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_cpp() },
                 in_source_languages: vec![],
                 in_source_node_kind: "",
                 in_source_node_kind_prefix: "",
@@ -250,6 +260,9 @@ fn get_language_from_filepath(filepath: &str) -> Result<Languages> {
         }
         "sh" => {
             return Ok(Languages::Bash);
+        }
+        "cpp" | "cc" => {
+            return Ok(Languages::Cpp);
         }
         "css" => {
             return Ok(Languages::Css);

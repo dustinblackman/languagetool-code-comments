@@ -62,6 +62,11 @@ fn main() {
             vec!["parser.c", "scanner.cc"],
         ),
         build_treesitter_grammar(
+            "tree-sitter-cpp",
+            "tree-sitter-cpp/src",
+            vec!["parser.c", "scanner.cc"],
+        ),
+        build_treesitter_grammar(
             "tree-sitter-css",
             "tree-sitter-css/src",
             vec!["parser.c", "scanner.c"],
