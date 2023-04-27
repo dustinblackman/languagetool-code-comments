@@ -22,6 +22,19 @@ async fn test_bash() -> Result<()> {
 }
 
 #[tokio::test]
+async fn test_cpp() -> Result<()> {
+    let res1 = parse_code_comments("./tests/fixtures/cpp.cpp").await?;
+    expect!(res1.len()).to(be_equal_to(2));
+    expect!(res1[0].text.to_owned()).to(be_equal_to("/* I am comment number one. */"));
+
+    let res2 = parse_code_comments("./tests/fixtures/cpp.cc").await?;
+    expect!(res2.len()).to(be_equal_to(2));
+    expect!(res2[0].text.to_owned()).to(be_equal_to("/* I am comment number one. */"));
+
+    return Ok(());
+}
+
+#[tokio::test]
 async fn test_css() -> Result<()> {
     let res = parse_code_comments("./tests/fixtures/css.css").await?;
     expect!(res.len()).to(be_equal_to(2));
