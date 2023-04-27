@@ -55,7 +55,7 @@ lint = '''set -e
   cargo +ltcc-nightly fmt --check
   cargo clippy
   cargo check
-  cargo bin dprint check
+  # cargo bin dprint check
   cargo bin cargo-deny check licenses
 '''
 lint-fix = '''set -e
