@@ -2,7 +2,6 @@
 name = "languagetool-code-comments"
 version = "0.5.0"
 edition = "2021"
-rust-version = "1.68.2"
 
 [dependencies]
 anyhow = "=1.0.63"
@@ -34,13 +33,15 @@ cc = { version = "=1.0.73", features = ["parallel"] }
 vergen = { version = "=7.4.0", features = ["git"] }
 
 [package.metadata.bin]
-cargo-llvm-cov = "0.4.14"
-cargo-deny = "0.13.5"
-cargo-bundle-licenses = "1.0.1"
-cargo-nextest = "0.9.35"
-cross = "0.2.4"
-dprint = "0.36.0"
-rust-script = "0.21.0"
+cargo-binstall = { version = "1.1.2" }
+cargo-cmd = { version = "0.3.1" }
+cargo-llvm-cov = { version = "0.5.25" }
+cargo-nextest = { version = "0.9.57", locked = true }
+cargo-deny = {version = "0.13.5"}
+cargo-bundle-licenses = {version = "1.0.1"}
+cross = {version = "0.2.4"}
+dprint = { version = "0.40.2" }
+rust-script = {version = "0.21.0"}
 
 [package.metadata.commands]
 build-completions = '''set -e
@@ -118,23 +119,17 @@ setup-nightly = '''
   rustup toolchain install "$LTCC_NIGHTLY" --component llvm-tools-preview rustfmt --force
   rustup toolchain link $(cargo cmd get-nightly-name | tail -n1) "$(rustup toolchain list -v | grep $LTCC_NIGHTLY | grep '^nightly-' | awk '{print $2}')"
 '''
-test = '''
-  cargo bin cargo-nextest run
-'''
+test = 'cargo nextest run'
 test-coverage = '''
-  cargo cmd setup-nightly
-  cargo +ltcc-nightly bin cargo-llvm-cov --ignore-filename-regex='_test.rs'
+  cargo llvm-cov nextest --ignore-filename-regex='_test.rs'
 '''
 test-coverage-html = '''
-  cargo cmd setup-nightly
-  cargo +ltcc-nightly bin cargo-llvm-cov --open --ignore-filename-regex='_test.rs'
+  cargo llvm-cov nextest --open --ignore-filename-regex='_test.rs'
 '''
 test-coverage-lcov = '''
-  cargo cmd setup-nightly
   rm -f lcov.info
-  cargo +ltcc-nightly bin cargo-llvm-cov --lcov --output-path lcov.info --ignore-filename-regex='_test.rs'
+  cargo llvm-cov nextest--lcov --output-path lcov.info --ignore-filename-regex='_test.rs'
 '''
 test-coverage-ci = '''
-  cargo cmd setup-nightly
-  cargo +ltcc-nightly bin cargo-llvm-cov --html --output-dir ./coverage --ignore-filename-regex='_test.rs'
+  cargo llvm-cov nextest --html --output-dir ./coverage --ignore-filename-regex='_test.rs'
 '''

@@ -20,7 +20,8 @@ jobs:
       - name: Install deps
         run: |
           git submodule update --init --recursive
-          cargo install cargo-cmd cargo-run-bin
+          cargo install cargo-run-bin
+          cargo bin --install
       - name: Setup nightly
         run: cargo cmd setup-nightly
       - name: Lint
