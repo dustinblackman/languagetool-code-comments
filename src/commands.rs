@@ -67,7 +67,7 @@ pub async fn check(
                 .clone()
                 .iter_mut()
                 .map(|e| {
-                    let mut more_context = e.more_context.as_mut().unwrap();
+                    let more_context = e.more_context.as_mut().unwrap();
                     more_context.line_number += code_comment.start_row;
                     more_context.line_offset += code_comment.start_column;
                     // TODO remove clone.

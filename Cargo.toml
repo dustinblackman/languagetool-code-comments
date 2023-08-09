@@ -37,11 +37,11 @@ cargo-binstall = { version = "1.1.2" }
 cargo-cmd = { version = "0.3.1" }
 cargo-llvm-cov = { version = "0.5.25" }
 cargo-nextest = { version = "0.9.57", locked = true }
-cargo-deny = {version = "0.13.5"}
-cargo-bundle-licenses = {version = "1.0.1"}
-cross = {version = "0.2.4"}
+cargo-deny = { version = "0.13.5" }
+cargo-bundle-licenses = { version = "1.0.1" }
+cross = { version = "0.2.4" }
 dprint = { version = "0.40.2" }
-rust-script = {version = "0.21.0"}
+rust-script = { version = "0.21.0" }
 
 [package.metadata.commands]
 build-completions = '''set -e
