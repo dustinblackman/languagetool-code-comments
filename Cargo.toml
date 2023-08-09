@@ -128,7 +128,7 @@ test-coverage-html = '''
 '''
 test-coverage-lcov = '''
   rm -f lcov.info
-  cargo llvm-cov nextest--lcov --output-path lcov.info --ignore-filename-regex='_test.rs'
+  cargo llvm-cov nextest --lcov --output-path lcov.info --ignore-filename-regex='_test.rs'
 '''
 test-coverage-ci = '''
   cargo llvm-cov nextest --html --output-dir ./coverage --ignore-filename-regex='_test.rs'
