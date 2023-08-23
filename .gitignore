@@ -1,4 +1,5 @@
 .bin/
+.gha/
 dist/
 /target
 test.ts

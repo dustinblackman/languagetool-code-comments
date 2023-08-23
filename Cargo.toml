@@ -35,6 +35,7 @@ vergen = { version = "=7.4.0", features = ["git"] }
 [package.metadata.bin]
 cargo-binstall = { version = "1.1.2" }
 cargo-cmd = { version = "0.3.1" }
+cargo-gha = { version = "0.1.2" }
 cargo-llvm-cov = { version = "0.5.25" }
 cargo-nextest = { version = "0.9.57", locked = true }
 cargo-deny = { version = "0.13.5" }
@@ -42,6 +43,12 @@ cargo-bundle-licenses = { version = "1.0.1" }
 cross = { version = "0.2.4" }
 dprint = { version = "0.40.2" }
 rust-script = { version = "0.21.0" }
+
+[package.metadata.gha]
+targets = ["x86_64-apple-darwin"]
+
+[package.metadata.gha.assets]
+goreleaser_goreleaser = { tag = "v1.10.3", owner_repo = "goreleaser/goreleaser", binaries = ["goreleaser"], target_archives = { x86_64-apple-darwin = "goreleaser_Darwin_x86_64.tar.gz" } }
 
 [package.metadata.commands]
 build-completions = '''set -e
@@ -71,12 +78,8 @@ lint-fix = '''set -e
 goreleaser = '''set -e
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
 
-  mkdir -p .bin
-  rm -f .bin/goreleaser
-  curl -L https://github.com/goreleaser/goreleaser/releases/download/v1.10.3/goreleaser_Darwin_x86_64.tar.gz | tar xz - -C .bin goreleaser
-
   cargo cmd build-completions
-  AUR_KEY=$(cat ~/.ssh/aur) .bin/goreleaser --rm-dist
+  AUR_KEY=$(cat ~/.ssh/aur) cargo gha goreleaser --rm-dist
   tools/apt.sh "$LTCC_VERSION" "$(realpath dist)"
   tools/choco.sh "$LTCC_VERSION" "$(realpath dist)"
   tools/nur.sh "$LTCC_VERSION" "$(realpath dist)"
