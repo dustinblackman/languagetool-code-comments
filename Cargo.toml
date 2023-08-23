@@ -90,7 +90,8 @@ release = '''set -e
   cargo bin cargo-deny check licenses
   cargo bin cargo-bundle-licenses --format json --output THIRDPARTY.json
   rm -f THIRDPARTY.md
-  cat THIRDPARTY.json | sd 'NOT FOUND' '' | jq -rc '.third_party_libraries[]' | jq -rcs '.[] | "## \(.package_name) - \(.licenses[0].license)\n\n\(.licenses[0].text)\n---\n"' > THIRDPARTY.md
+  cat THIRDPARTY.json | sed 's/NOT FOUND//g' | jq -rc '.third_party_libraries[]' | jq -rcs '.[] | "## \(.package_name) - \(.licenses[0].license)\n\n\(.licenses[0].text)\n\n---\n"' > THIRDPARTY.md
+  cargo bin dprint fmt
 
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
   git add .
