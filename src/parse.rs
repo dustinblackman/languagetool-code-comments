@@ -86,7 +86,7 @@ enum Languages {
     Tsx,
     Typescript,
     Yaml,
-    Elixir
+    Elixir,
 }
 
 /// Returns a language configuration.
@@ -347,7 +347,7 @@ fn parse_tree<'a>(
             return Ok(node.kind());
         }
 
-        if vec!["comment", "line_comment", "@comment"].contains(&node.kind()) {
+        if ["comment", "line_comment", "@comment"].contains(&node.kind()) {
             let node_text = &text[node.byte_range()];
             let start_position = node.start_position();
             let comment_node = CommentLeaf {
