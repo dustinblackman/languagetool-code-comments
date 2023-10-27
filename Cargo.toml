@@ -33,22 +33,23 @@ cc = { version = "=1.0.73", features = ["parallel"] }
 vergen = { version = "=7.4.0", features = ["git"] }
 
 [package.metadata.bin]
-cargo-binstall = { version = "1.1.2" }
+cargo-binstall = { version = "1.4.4" }
+cargo-bundle-licenses = { version = "1.0.1" }
 cargo-cmd = { version = "0.3.1" }
-cargo-gha = { version = "0.1.2" }
+cargo-deny = { version = "0.13.5" }
+cargo-gha = { version = "0.4.6" }
 cargo-llvm-cov = { version = "0.5.25" }
 cargo-nextest = { version = "0.9.57", locked = true }
-cargo-deny = { version = "0.13.5" }
-cargo-bundle-licenses = { version = "1.0.1" }
-cross = { version = "0.2.4" }
+cargo-xwin = { version = "0.14.8" }
+cargo-zigbuild = { version = "0.17.4" }
 dprint = { version = "0.40.2" }
 rust-script = { version = "0.21.0" }
 
 [package.metadata.gha]
-targets = ["x86_64-apple-darwin"]
+targets = ["aarch64-apple-darwin"]
 
 [package.metadata.gha.assets]
-goreleaser_goreleaser = { tag = "v1.10.3", owner_repo = "goreleaser/goreleaser", binaries = ["goreleaser"], target_archives = { x86_64-apple-darwin = "goreleaser_Darwin_x86_64.tar.gz" } }
+goreleaser_goreleaser = { tag = "v1.21.2", owner_repo = "goreleaser/goreleaser", binaries = ["goreleaser"], target_archives = { aarch64-apple-darwin = "goreleaser_Darwin_arm64.tar.gz" } }
 
 [package.metadata.commands]
 build-completions = '''set -e
@@ -106,11 +107,11 @@ release = '''set -e
   git tag -d "v$LTCC_VERSION"
   git tag -a "v$LTCC_VERSION" -m "v$LTCC_VERSION"
 
-  cargo bin cross build --release --target x86_64-apple-darwin
-  cargo bin cross build --release --target aarch64-apple-darwin
-  cargo bin cross build --release --target x86_64-unknown-linux-gnu
-  cargo bin cross build --release --target aarch64-unknown-linux-gnu
-  cargo bin cross build --release --target x86_64-pc-windows-gnu
+  cargo zigbuild --release --target x86_64-apple-darwin
+  cargo zigbuild --release --target aarch64-apple-darwin
+  cargo zigbuild --release --target x86_64-unknown-linux-gnu
+  cargo zigbuild --release --target aarch64-unknown-linux-gnu
+  cargo xwin build --release --target x86_64-pc-windows-msvc --xwin-arch x86_64
 
   git push
   git push --tags
