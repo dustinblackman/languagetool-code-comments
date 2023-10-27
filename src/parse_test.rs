@@ -188,6 +188,16 @@ async fn test_yaml() -> Result<()> {
 }
 
 #[tokio::test]
+async fn test_elixir() -> Result<()> {
+    let res = parse_code_comments("./tests/fixtures/elixir.ex").await?;
+    expect!(res.len()).to(be_equal_to(2));
+    expect!(res[0].text.to_owned()).to(be_equal_to("# I am comment number one."));
+    expect!(res[1].text.to_owned()).to(be_equal_to("# I am comment number two."));
+
+    return Ok(());
+}
+
+#[tokio::test]
 async fn test_error() -> Result<()> {
     let res = parse_code_comments("./tests/fixtures/fail.txt").await;
     expect!(res.is_err()).to(be_equal_to(true));

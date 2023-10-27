@@ -58,3 +58,6 @@
 [submodule "external/tree-sitter-cpp"]
 	path = external/tree-sitter-cpp
 	url = https://github.com/tree-sitter/tree-sitter-cpp.git
+[submodule "external/tree-sitter-elixir"]
+	path = external/tree-sitter-elixir
+	url = https://github.com/elixir-lang/tree-sitter-elixir.git

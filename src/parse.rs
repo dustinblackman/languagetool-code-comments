@@ -62,6 +62,7 @@ extern "C" {
     fn tree_sitter_tsx() -> TSLanguage;
     fn tree_sitter_typescript() -> TSLanguage;
     fn tree_sitter_yaml() -> TSLanguage;
+    fn tree_sitter_elixir() -> TSLanguage;
 }
 
 #[derive(Clone, Debug)]
@@ -85,6 +86,7 @@ enum Languages {
     Tsx,
     Typescript,
     Yaml,
+    Elixir
 }
 
 /// Returns a language configuration.
@@ -242,6 +244,14 @@ fn get_language_config(lang: Languages) -> LanguageConfig {
                 in_source_node_kind_prefix: "",
             }
         }
+        Languages::Elixir => {
+            return LanguageConfig {
+                language: unsafe { tree_sitter_elixir() },
+                in_source_languages: vec![],
+                in_source_node_kind: "",
+                in_source_node_kind_prefix: "",
+            }
+        }
     }
 }
 
@@ -312,6 +322,9 @@ fn get_language_from_filepath(filepath: &str) -> Result<Languages> {
         "Makefile" => {
             return Ok(Languages::Make);
         }
+        "ex" | "exs" => {
+            return Ok(Languages::Elixir);
+        }
         _ => {
             return Err(anyhow!(f!("Can not detect language for file {filepath}")));
         }
@@ -334,7 +347,7 @@ fn parse_tree<'a>(
             return Ok(node.kind());
         }
 
-        if ["comment", "line_comment"].contains(&node.kind()) {
+        if vec!["comment", "line_comment", "@comment"].contains(&node.kind()) {
             let node_text = &text[node.byte_range()];
             let start_position = node.start_position();
             let comment_node = CommentLeaf {

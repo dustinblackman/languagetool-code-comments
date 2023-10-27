@@ -139,6 +139,11 @@ fn main() {
             "tree-sitter-yaml/src",
             vec!["parser.c", "scanner.cc"],
         ),
+        build_treesitter_grammar(
+            "tree-sitter-elixir",
+            "tree-sitter-elixir/src",
+            vec!["parser.c", "scanner.c"],
+        ),
     ];
     langs.sort();
     let langs_str = langs.join(",");
