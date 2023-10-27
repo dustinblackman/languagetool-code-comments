@@ -89,7 +89,7 @@ impl Client {
 
         // Creates a queue to process multiple code comment leaves concurrently.
         let mut threads = Vec::new();
-        concurrency = *(vec![concurrency, requests.len()].iter().min().unwrap());
+        concurrency = *([concurrency, requests.len()].iter().min().unwrap());
 
         for _ in 0..concurrency {
             let matches_send = matches_send_master.clone();

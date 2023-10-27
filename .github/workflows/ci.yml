@@ -21,7 +21,7 @@ jobs:
         run: |
           git submodule update --init --recursive
           cargo install cargo-run-bin
-          cargo bin --install
+          cargo binstall --help >/dev/null
       - name: Setup nightly
         run: cargo cmd setup-nightly
       - name: Lint
