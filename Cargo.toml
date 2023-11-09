@@ -88,6 +88,7 @@ goreleaser = '''set -e
   tools/yum.sh "$LTCC_VERSION" "$(realpath dist)"
 '''
 release = '''set -e
+  docker ps >/dev/null || (echo "Docker is not running" && exit 1)
   cargo check
   cargo bin cargo-deny check licenses
   ./tools/thirdparty/run.sh
