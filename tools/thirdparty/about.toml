@@ -1,0 +1,52 @@
+accepted = [
+  # Prioritized
+  "MIT",
+  "Apache-2.0",
+
+  # Others
+  "BSL-1.0",
+  "ISC",
+  "Unicode-DFS-2016",
+  "BSD-3-Clause",
+]
+
+ignore-build-dependencies = true
+ignore-dev-dependencies = true
+
+targets = ["x86_64-apple-darwin", "aarch64-apple-darwin", "x86_64-unknown-linux-gnu", "aarch64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+
+[fstrings-proc-macro.clarify]
+license = "MIT"
+
+[[fstrings-proc-macro.clarify.git]]
+path = "LICENSE"
+checksum = "514bc1d45725e4f9fc5a11faa35605596a813bfe9d2d3b2f1c2f71e025da83f9"
+
+[tree-sitter.clarify]
+license = "MIT"
+
+[[tree-sitter.clarify.git]]
+path = "LICENSE"
+checksum = "5eb1860bedd3a6eca8652ac3c8f0c8dbfb6878b6363628832d2fc05675b76a4f"
+
+[windows_x86_64_msvc.clarify]
+license = "MIT"
+override_git_commit = "4003f08d472b5dc1c48a48b9c9707292bf17787e"
+
+[[windows_x86_64_msvc.clarify.git]]
+path = "license-mit"
+checksum = "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+
+[winapi.clarify]
+license = "MIT"
+
+[[winapi.clarify.git]]
+path = "LICENSE-MIT"
+checksum = "ce7bc3499fee93d5022ef430d5e4201e79a6d9154f3974e42f41349f0569e09b"
+
+[unicode-normalization.clarify]
+license = "MIT"
+
+[[unicode-normalization.clarify.git]]
+path = "LICENSE-MIT"
+checksum = "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0"

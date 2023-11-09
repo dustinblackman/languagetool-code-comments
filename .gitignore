@@ -4,6 +4,4 @@ dist/
 /target
 test.ts
 completions
-THIRDPARTY.yml
-THIRDPARTY.json
-THIRDPARTY.md
+THIRDPARTY.html

@@ -2,6 +2,7 @@
 name = "languagetool-code-comments"
 version = "0.6.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 anyhow = "=1.0.63"
@@ -33,8 +34,8 @@ cc = { version = "=1.0.73", features = ["parallel"] }
 vergen = { version = "=7.4.0", features = ["git"] }
 
 [package.metadata.bin]
+cargo-about = { version = "0.5.7" }
 cargo-binstall = { version = "1.4.4" }
-cargo-bundle-licenses = { version = "1.0.1" }
 cargo-cmd = { version = "0.3.1" }
 cargo-deny = { version = "0.13.5" }
 cargo-gha = { version = "0.4.6" }
@@ -89,10 +90,7 @@ goreleaser = '''set -e
 release = '''set -e
   cargo check
   cargo bin cargo-deny check licenses
-  cargo bin cargo-bundle-licenses --format json --output THIRDPARTY.json
-  rm -f THIRDPARTY.md
-  cat THIRDPARTY.json | sed 's/NOT FOUND//g' | jq -rc '.third_party_libraries[]' | jq -rcs '.[] | "## \(.package_name) - \(.licenses[0].license)\n\n\(.licenses[0].text)\n\n---\n"' > THIRDPARTY.md
-  cargo bin dprint fmt
+  ./tools/thirdparty/run.sh
 
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
   git add .
