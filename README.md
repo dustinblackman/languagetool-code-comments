@@ -8,6 +8,13 @@
 
 - [Overview](#Overview)
 - [Install](#Install)
+  - [MacOS](#macos)
+  - [Debian / Ubuntu](#debian--ubuntu)
+  - [Fedora / CentOS](#fedora--centos)
+  - [Nix](#nix)
+  - [Arch Linux](#arch-linux)
+  - [Windows](#windows)
+  - [Manual](#manual)
   - [Source](#source)
 - [Usage](#Usage)
   - [CLI](#cli)
@@ -73,6 +80,64 @@ SUPPORTED LANGUAGES:
 <!-- command-help end -->
 
 ## Install
+
+### MacOS
+
+```sh
+brew install dustinblackman/tap/languagetool-code-comments
+```
+
+### Debian / Ubuntu
+
+```sh
+curl -s https://apt.dustinblackman.com/KEY.gpg | apt-key add -
+curl -s https://apt.dustinblackman.com/dustinblackman.list > /etc/apt/sources.list.d/dustinblackman.list
+sudo apt-get update
+sudo apt-get install languagetool-code-comments
+```
+
+### Fedora / CentOS
+
+```sh
+dnf config-manager --add-repo https://yum.dustinblackman.com/config.repo
+dnf install languagetool-code-comments
+```
+
+### Nix
+
+```sh
+nix-env -f '<nixpkgs>' -iA nur.repos.dustinblackman.languagetool-code-comments
+```
+
+### Arch Linux
+
+```sh
+yay -S languagetool-code-comments-bin
+```
+
+### Windows
+
+**Chocolatey**
+
+<!-- choco-install start -->
+
+```sh
+choco install languagetool-code-comments --version=0.6.0
+```
+
+<!-- choco-install end -->
+
+**Scoop**
+
+```sh
+scoop bucket add dustinblackman https://github.com/dustinblackman/scoop-bucket.git
+scoop install languagetool-code-comments
+```
+
+### Manual
+
+Download the pre-compiled binaries and packages from the [releases page](https://github.com/dustinblackman/languagetool-code-comments/releases) and
+copy to the desired location.
 
 ### Source
 
