@@ -5,3 +5,4 @@ dist/
 test.ts
 completions
 THIRDPARTY.html
+.DS_Store

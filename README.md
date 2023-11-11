@@ -1,4 +1,6 @@
-![languagetool-code-comments](.github/banner.jpg)
+<h1 align=center>languagetool-code-comments</h1>
+
+![languagetool-code-comments](.github/banner.png)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/dustinblackman/languagetool-code-comments/ci.yml?branch=main)](https://github.com/dustinblackman/languagetool-code-comments/actions)
 [![Release](https://img.shields.io/github/v/release/dustinblackman/languagetool-code-comments)](https://github.com/dustinblackman/languagetool-code-comments/releases)
