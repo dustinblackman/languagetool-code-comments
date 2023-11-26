@@ -1,3 +1,6 @@
+[build]
+rustflags = ["--remap-path-prefix", "$HOME=/home", "--remap-path-prefix", "$PWD=/app"]
+
 [alias]
 about = ["bin", "cargo-about"]
 binstall = ["bin", "cargo-binstall"]
