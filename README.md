@@ -37,7 +37,7 @@ Using the power of [Tree Sitter](https://tree-sitter.github.io/tree-sitter/#avai
 <!-- command-help start -->
 
 ```
-languagetool-code-comments v0.6.1
+languagetool-code-comments v0.6.2
 Integrates the LanguageTool API to parse, spell check, and correct the grammar of your code
 comments!
 
@@ -124,7 +124,7 @@ yay -S languagetool-code-comments-bin
 <!-- choco-install start -->
 
 ```sh
-choco install languagetool-code-comments --version=0.6.1
+choco install languagetool-code-comments --version=0.6.2
 ```
 
 <!-- choco-install end -->
