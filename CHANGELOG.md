@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - 2023-11-26
+## [0.6.2] - 2023-11-30
+
+[v0.6.2...v0.6.2](https://github.com/dustinblackman/languagetool-code-comments/compare/v0.6.2...v0.6.2)
+
+### 🐛 Bug Fixes
+
+- File permissions in releases - ([145daa7](https://github.com/dustinblackman/languagetool-code-comments/commit/145daa73ef9d01e52bb9c817021b998336b826c8))
+
+### ⚙️ Miscellaneous Tasks
+
+- Lock zig version - ([4d36738](https://github.com/dustinblackman/languagetool-code-comments/commit/4d36738fa3c5f0ce866898345a5bea22a8baea77))
+- Debug CI - ([e40bc00](https://github.com/dustinblackman/languagetool-code-comments/commit/e40bc007ff5eb83099864419b9889edd1f55c5b5))
+- Move to faster builds - ([3fe743a](https://github.com/dustinblackman/languagetool-code-comments/commit/3fe743a2e84b7e02f45bb64fb13981a4e2b4a0f0))
+
+## [0.6.2] - 2023-11-30
 
 [v0.6.1...v0.6.2](https://github.com/dustinblackman/languagetool-code-comments/compare/v0.6.1...v0.6.2)
 
