@@ -24,7 +24,7 @@ goTargetToRust() {
 rm -rf "./dist/languagetool-code-comments_${target}"
 mkdir -p "./dist/languagetool-code-comments_${target}"
 
-rustbin="./target/$(goTargetToRust)/release/languagetool-code-comments"
+rustbin="./dist-gh/$(goTargetToRust)/languagetool-code-comments"
 if [[ "$target" == "windows_amd64_v1" ]]; then
 	rustbin="${rustbin}.exe"
 fi

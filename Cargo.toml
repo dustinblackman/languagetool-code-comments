@@ -41,8 +41,6 @@ cargo-deny = { version = "0.13.5" }
 cargo-gha = { version = "0.4.6" }
 cargo-llvm-cov = { version = "0.5.25" }
 cargo-nextest = { version = "0.9.57", locked = true }
-cargo-xwin = { version = "0.14.8" }
-cargo-zigbuild = { version = "0.17.4" }
 dprint = { version = "0.40.2" }
 git-cliff = { version = "1.3.1" }
 rust-script = { version = "0.21.0" }
@@ -96,6 +94,11 @@ release = '''set -e
   cargo bin cargo-deny check licenses
   ./tools/thirdparty/run.sh
 
+  rm -rf dist-gh
+  mkdir dist-gh
+  export GH_RUN_ID=$(cargo gha gh run list -R dustinblackman/languagetool-code-comments -w build --json databaseId | jq -rc '.[0].databaseId')
+  cargo gha gh run download -D dist-gh $GH_RUN_ID
+
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
   cargo bin git-cliff -o CHANGELOG.md --tag "v$LTCC_VERSION"
   cargo bin dprint fmt
@@ -111,12 +114,6 @@ release = '''set -e
   git commit --amend -m "v$LTCC_VERSION"
   git tag -d "v$LTCC_VERSION"
   git tag -a "v$LTCC_VERSION" -m "v$LTCC_VERSION"
-
-  ./tools/release-env.sh zigbuild --release --target x86_64-apple-darwin
-  ./tools/release-env.sh zigbuild --release --target aarch64-apple-darwin
-  ./tools/release-env.sh zigbuild --release --target x86_64-unknown-linux-gnu
-  ./tools/release-env.sh zigbuild --release --target aarch64-unknown-linux-gnu
-  ./tools/release-env.sh xwin build --release --target x86_64-pc-windows-msvc --xwin-arch x86_64 --xwin-cache-dir .bin/xwin/x86_64
 
   git push
   git push --tags
