@@ -98,6 +98,7 @@ release = '''set -e
   mkdir dist-gh
   export GH_RUN_ID=$(cargo gha gh run list -R dustinblackman/languagetool-code-comments -w build --json databaseId | jq -rc '.[0].databaseId')
   cargo gha gh run download -D dist-gh $GH_RUN_ID
+  fd -t f . './dist-gh' | xargs -L1 chmod +x
 
   export LTCC_VERSION=$(cat Cargo.toml | grep version | head -n1 | awk -F '"' '{print $2}')
   cargo bin git-cliff -o CHANGELOG.md --tag "v$LTCC_VERSION"
