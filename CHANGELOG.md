@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - 2023-11-30
+## [0.6.3] - 2023-11-30
 
-[v0.6.2...v0.6.2](https://github.com/dustinblackman/languagetool-code-comments/compare/v0.6.2...v0.6.2)
+[v0.6.2...v0.6.3](https://github.com/dustinblackman/languagetool-code-comments/compare/v0.6.2...v0.6.3)
 
 ### 🐛 Bug Fixes
 
@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 - Debug CI - ([e40bc00](https://github.com/dustinblackman/languagetool-code-comments/commit/e40bc007ff5eb83099864419b9889edd1f55c5b5))
 - Move to faster builds - ([3fe743a](https://github.com/dustinblackman/languagetool-code-comments/commit/3fe743a2e84b7e02f45bb64fb13981a4e2b4a0f0))
 
-## [0.6.2] - 2023-11-30
+## [0.6.2] - 2023-11-26
 
 [v0.6.1...v0.6.2](https://github.com/dustinblackman/languagetool-code-comments/compare/v0.6.1...v0.6.2)
 
