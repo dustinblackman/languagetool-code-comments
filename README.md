@@ -102,7 +102,7 @@ sudo apt-get install languagetool-code-comments
 
 ```sh
 dnf config-manager --add-repo https://yum.dustinblackman.com/config.repo
-dnf install languagetool-code-comments
+dnf install --nogpgcheck languagetool-code-comments
 ```
 
 ### Nix
